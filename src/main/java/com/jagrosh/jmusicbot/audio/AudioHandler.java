@@ -37,6 +37,7 @@ import java.nio.ByteBuffer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.audio.AudioSendHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -215,7 +216,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
 
     
     // Formatting
-    public Message getNowPlaying(JDA jda)
+    public MessageCreateData getNowPlaying(JDA jda)
     {
         if(isMusicPlaying(jda))
         {
@@ -235,11 +236,11 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                     eb.setAuthor(FormatUtil.formatUsername(u), null, u.getEffectiveAvatarUrl());
             }
 
-            try 
+            try
             {
                 eb.setTitle(track.getInfo().title, track.getInfo().uri);
             }
-            catch(Exception e) 
+            catch(Exception e)
             {
                 eb.setTitle(track.getInfo().title);
             }
@@ -248,7 +249,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             {
                 eb.setThumbnail("https://img.youtube.com/vi/"+track.getIdentifier()+"/mqdefault.jpg");
             }
-            
+
             if(track.getInfo().author != null && !track.getInfo().author.isEmpty())
                 eb.setFooter("Source: " + track.getInfo().author, null);
 
@@ -257,13 +258,13 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                     + " "+FormatUtil.progressBar(progress)
                     + " `[" + TimeUtil.formatTime(track.getPosition()) + "/" + TimeUtil.formatTime(track.getDuration()) + "]` "
                     + FormatUtil.volumeIcon(audioPlayer.getVolume()));
-            
+
             return mb.setEmbeds(eb.build()).build();
         }
         else return null;
     }
-    
-    public Message getNoMusicPlaying(JDA jda)
+
+    public MessageCreateData getNoMusicPlaying(JDA jda)
     {
         Guild guild = guild(jda);
         return new MessageCreateBuilder()

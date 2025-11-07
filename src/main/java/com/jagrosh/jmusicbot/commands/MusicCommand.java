@@ -66,7 +66,7 @@ public abstract class MusicCommand extends Command
         }
         if(beListening)
         {
-            VoiceChannel current = event.getGuild().getSelfMember().getVoiceState().getChannel();
+            VoiceChannel current = (VoiceChannel) event.getGuild().getSelfMember().getVoiceState().getChannel();
             if(current==null)
                 current = settings.getVoiceChannel(event.getGuild());
             GuildVoiceState userState = event.getMember().getVoiceState();
@@ -83,9 +83,9 @@ public abstract class MusicCommand extends Command
                 return;
             }
 
-            if(!event.getGuild().getSelfMember().getVoiceState().inVoiceChannel())
+            if(event.getGuild().getSelfMember().getVoiceState().getChannel() == null)
             {
-                try 
+                try
                 {
                     event.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
                 }

@@ -50,7 +50,7 @@ public class JMusicBot
     public final static Permission[] RECOMMENDED_PERMS = {Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
                                 Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
                                 Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
-    public final static GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES};
+    public final static GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.MESSAGE_CONTENT};
     
     /**
      * @param args the command line arguments
@@ -147,23 +147,11 @@ public class JMusicBot
                         + "on https://discord.com/developers/applications/" + jda.getSelfUser().getId() + "/bot");
             }
         }
-        catch (LoginException ex)
+        catch (Exception ex)
         {
             prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nPlease make sure you are "
                     + "editing the correct config.txt file, and that you have used the "
                     + "correct token (not the 'secret'!)\nConfig Location: " + config.getConfigLocation());
-            System.exit(1);
-        }
-        catch(IllegalArgumentException ex)
-        {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "Some aspect of the configuration is "
-                    + "invalid: " + ex + "\nConfig Location: " + config.getConfigLocation());
-            System.exit(1);
-        }
-        catch(ErrorResponseException ex)
-        {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nInvalid reponse returned when "
-                    + "attempting to connect, please make sure you're connected to the internet");
             System.exit(1);
         }
     }
@@ -180,6 +168,11 @@ public class JMusicBot
                 .setLinkedCacheSize(200)
                 .setGuildSettingsManager(settings)
                 .addCommands(
+                        new AboutCommand(Color.BLUE.brighter(),
+                                "a music bot that is easy to set up and run yourself",
+                                new String[]{"High-quality music playback", "Fair Queue scheduling", "Custom playlists"},
+                                RECOMMENDED_PERMS),
+                        new PingCommand(),
                         new SettingsCmd(bot),
                         
                         new LyricsCmd(bot),
@@ -221,6 +214,10 @@ public class JMusicBot
                         new ShutdownCmd(bot)
                 );
         
+        // enable eval if owner did so
+        if(config.useEval())
+            cb.addCommand(new EvalCmd(bot));
+
         // set status if set in config
         if(config.getStatus() != OnlineStatus.UNKNOWN)
             cb.setStatus(config.getStatus());
