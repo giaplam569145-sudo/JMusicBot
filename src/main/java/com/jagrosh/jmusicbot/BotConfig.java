@@ -68,8 +68,8 @@ public class BotConfig
             path = getConfigPath();
             
             // load in the config file, plus the default values
-            //Config config = ConfigFactory.parseFile(path.toFile()).withFallback(ConfigFactory.load());
-            Config config = ConfigFactory.load();
+            Config config = ConfigFactory.parseFile(path.toFile()).withFallback(ConfigFactory.load());
+            //Config config = ConfigFactory.load();
             
             // set values
             token = config.getString("token");

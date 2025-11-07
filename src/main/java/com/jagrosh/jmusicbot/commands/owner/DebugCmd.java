@@ -23,19 +23,20 @@ import com.jagrosh.jmusicbot.utils.OtherUtil;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 /**
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
-public class DebugCmd extends OwnerCommand 
+public class DebugCmd extends OwnerCommand
 {
-    private final static String[] PROPERTIES = {"java.version", "java.vm.name", "java.vm.specification.version", 
+    private final static String[] PROPERTIES = {"java.version", "java.vm.name", "java.vm.specification.version",
         "java.runtime.name", "java.runtime.version", "java.specification.version",  "os.arch", "os.name"};
-    
+
     private final Bot bot;
-    
+
     public DebugCmd(Bot bot)
     {
         this.bot = bot;
@@ -77,10 +78,10 @@ public class DebugCmd extends OwnerCommand
                 .append("\n  Guilds = ").append(event.getJDA().getGuildCache().size())
                 .append("\n  Users = ").append(event.getJDA().getUserCache().size());
         sb.append("\n```");
-        
-        if(event.isFromType(ChannelType.PRIVATE) 
+
+        if(event.isFromType(ChannelType.PRIVATE)
                 || event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ATTACH_FILES))
-            event.getChannel().sendFile(sb.toString().getBytes(), "debug_information.txt").queue();
+            event.getChannel().sendFiles(FileUpload.fromData(sb.toString().getBytes(), "debug_information.txt")).queue();
         else
             event.reply("Debug Information: " + sb.toString());
     }
