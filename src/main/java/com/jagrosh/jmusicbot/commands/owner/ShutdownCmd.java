@@ -20,6 +20,7 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
 
 /**
+ * A command to safely shut down the bot.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
@@ -27,6 +28,11 @@ public class ShutdownCmd extends OwnerCommand
 {
     private final Bot bot;
     
+    /**
+     * Constructs a new ShutdownCmd.
+     *
+     * @param bot The bot instance.
+     */
     public ShutdownCmd(Bot bot)
     {
         this.bot = bot;

@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import net.dv8tion.jda.api.entities.Activity;
 
 /**
+ * A command to set the bot's currently playing game.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetgameCmd extends OwnerCommand
 {
+    /**
+     * Constructs a new SetgameCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SetgameCmd(Bot bot)
     {
         this.name = "setgame";

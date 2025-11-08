@@ -30,11 +30,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * A command to remove all entries by a specific user from the queue.
  *
  * @author Michaili K.
  */
 public class ForceRemoveCmd extends DJCommand
 {
+    /**
+     * Constructs a new ForceRemoveCmd.
+     *
+     * @param bot The bot instance.
+     */
     public ForceRemoveCmd(Bot bot)
     {
         super(bot);

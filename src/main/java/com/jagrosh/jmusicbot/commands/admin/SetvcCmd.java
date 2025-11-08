@@ -25,11 +25,17 @@ import com.jagrosh.jmusicbot.utils.FormatUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 /**
+ * A command to set the voice channel for music commands.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SetvcCmd extends AdminCommand 
+public class SetvcCmd extends AdminCommand
 {
+    /**
+     * Constructs a new SetvcCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SetvcCmd(Bot bot)
     {
         this.name = "setvc";

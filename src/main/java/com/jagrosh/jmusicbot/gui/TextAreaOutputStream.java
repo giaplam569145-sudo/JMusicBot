@@ -21,23 +21,36 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 /**
+ * An output stream that redirects console output to a JTextArea.
  *
  * @author Lawrence Dol
  */
-public class TextAreaOutputStream extends OutputStream {
+public class TextAreaOutputStream extends OutputStream
+{
 
-// *************************************************************************************************
+    // *************************************************************************************************
 // INSTANCE MEMBERS
 // *************************************************************************************************
 
 private byte[]                          oneByte;                                                    // array for write(int val);
 private Appender                        appender;                                                   // most recent action
 
-public TextAreaOutputStream(JTextArea txtara) {
+    /**
+     * Constructs a new TextAreaOutputStream.
+     *
+     * @param txtara The JTextArea to write to.
+     */
+    public TextAreaOutputStream(JTextArea txtara) {
     this(txtara,1000);
     }
 
-public TextAreaOutputStream(JTextArea txtara, int maxlin) {
+    /**
+     * Constructs a new TextAreaOutputStream.
+     *
+     * @param txtara The JTextArea to write to.
+     * @param maxlin The maximum number of lines to display.
+     */
+    public TextAreaOutputStream(JTextArea txtara, int maxlin) {
     if(maxlin<1) { throw new IllegalArgumentException("TextAreaOutputStream maximum lines must be positive (value="+maxlin+")"); }
     oneByte=new byte[1];
     appender=new Appender(txtara,maxlin);

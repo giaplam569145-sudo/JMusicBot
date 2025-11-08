@@ -23,11 +23,19 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 /**
+ * A utility class for formatting various strings and creating lists for display in Discord.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class FormatUtil {
 
+    /**
+     * Formats a username with a discriminator.
+     *
+     * @param username The username.
+     * @param discrim  The discriminator.
+     * @return The formatted username.
+     */
     public static String formatUsername(String username, String discrim)
     {
         if(discrim == null || discrim.equals("0000"))
@@ -40,16 +48,34 @@ public class FormatUtil {
         }
     }
 
+    /**
+     * Formats a username from a {@link UserInfo} object.
+     *
+     * @param userinfo The user info.
+     * @return The formatted username.
+     */
     public static String formatUsername(UserInfo userinfo)
     {
         return formatUsername(userinfo.username, userinfo.discrim);
     }
 
+    /**
+     * Formats a username from a {@link User} object.
+     *
+     * @param user The user.
+     * @return The formatted username.
+     */
     public static String formatUsername(User user)
     {
         return formatUsername(user.getName(), user.getDiscriminator());
     }
 
+    /**
+     * Creates a progress bar.
+     *
+     * @param percent The percentage to display.
+     * @return A string representing the progress bar.
+     */
     public static String progressBar(double percent)
     {
         String str = "";
@@ -61,6 +87,12 @@ public class FormatUtil {
         return str;
     }
     
+    /**
+     * Returns a volume icon based on the volume level.
+     *
+     * @param volume The volume level.
+     * @return A string containing the volume icon.
+     */
     public static String volumeIcon(int volume)
     {
         if(volume == 0)
@@ -72,6 +104,13 @@ public class FormatUtil {
         return "\uD83D\uDD0A";     // 🔊
     }
     
+    /**
+     * Creates a formatted list of text channels.
+     *
+     * @param list  The list of text channels.
+     * @param query The query used to find the channels.
+     * @return A formatted string listing the channels.
+     */
     public static String listOfTChannels(List<TextChannel> list, String query)
     {
         String out = " Multiple text channels found matching \""+query+"\":";
@@ -82,6 +121,13 @@ public class FormatUtil {
         return out;
     }
     
+    /**
+     * Creates a formatted list of voice channels.
+     *
+     * @param list  The list of voice channels.
+     * @param query The query used to find the channels.
+     * @return A formatted string listing the channels.
+     */
     public static String listOfVChannels(List<VoiceChannel> list, String query)
     {
         String out = " Multiple voice channels found matching \""+query+"\":";
@@ -92,6 +138,13 @@ public class FormatUtil {
         return out;
     }
     
+    /**
+     * Creates a formatted list of roles.
+     *
+     * @param list  The list of roles.
+     * @param query The query used to find the roles.
+     * @return A formatted string listing the roles.
+     */
     public static String listOfRoles(List<Role> list, String query)
     {
         String out = " Multiple roles found matching \""+query+"\":";
@@ -102,6 +155,12 @@ public class FormatUtil {
         return out;
     }
     
+    /**
+     * Filters a string to prevent mentions and other exploits.
+     *
+     * @param input The string to filter.
+     * @return The filtered string.
+     */
     public static String filter(String input)
     {
         return input.replace("\u202E","")

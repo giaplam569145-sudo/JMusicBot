@@ -19,11 +19,15 @@ import com.jagrosh.jdautilities.command.Command;
 import net.dv8tion.jda.api.Permission;
 
 /**
+ * A base class for commands that require administrator permissions.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public abstract class AdminCommand extends Command
 {
+    /**
+     * Constructs a new AdminCommand.
+     */
     public AdminCommand()
     {
         this.category = new Category("Admin", event -> 

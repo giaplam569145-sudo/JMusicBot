@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 /**
+ * A utility class for various helper functions, such as path resolution, resource loading, and version checking.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
@@ -47,12 +48,10 @@ public class OtherUtil
     private final static String WINDOWS_INVALID_PATH = "c:\\windows\\system32\\";
     
     /**
-     * gets a Path from a String
-     * also fixes the windows tendency to try to start in system32
-     * any time the bot tries to access this path, it will instead start in the location of the jar file
-     * 
-     * @param path the string path
-     * @return the Path object
+     * Gets a {@link Path} from a string, fixing an issue on Windows where the bot may try to start in System32.
+     *
+     * @param path The string path.
+     * @return The {@link Path} object.
      */
     public static Path getPath(String path)
     {
@@ -70,11 +69,11 @@ public class OtherUtil
     }
     
     /**
-     * Loads a resource from the jar as a string
-     * 
-     * @param clazz class base object
-     * @param name name of resource
-     * @return string containing the contents of the resource
+     * Loads a resource from the JAR file as a string.
+     *
+     * @param clazz The class to use for resource loading.
+     * @param name  The name of the resource.
+     * @return A string containing the contents of the resource.
      */
     public static String loadResource(Object clazz, String name)
     {
@@ -91,10 +90,10 @@ public class OtherUtil
     }
     
     /**
-     * Loads image data from a URL
-     * 
-     * @param url url of image
-     * @return inputstream of url
+     * Loads image data from a URL.
+     *
+     * @param url The URL of the image.
+     * @return An {@link InputStream} of the image data.
      */
     public static InputStream imageFromUrl(String url)
     {
@@ -112,10 +111,10 @@ public class OtherUtil
     }
     
     /**
-     * Parses an activity from a string
-     * 
-     * @param game the game, including the action such as 'playing' or 'watching'
-     * @return the parsed activity
+     * Parses an {@link Activity} from a string.
+     *
+     * @param game The string to parse, including the action (e.g., "playing", "watching").
+     * @return The parsed {@link Activity}.
      */
     public static Activity parseGame(String game)
     {
@@ -141,11 +140,23 @@ public class OtherUtil
         return Activity.playing(game);
     }
    
+    /**
+     * Makes a string non-empty by adding a zero-width space if it's null or empty.
+     *
+     * @param str The string to process.
+     * @return The non-empty string.
+     */
     public static String makeNonEmpty(String str)
     {
         return str == null || str.isEmpty() ? "\u200B" : str;
     }
     
+    /**
+     * Parses an {@link OnlineStatus} from a string.
+     *
+     * @param status The string to parse.
+     * @return The parsed {@link OnlineStatus}.
+     */
     public static OnlineStatus parseStatus(String status)
     {
         if(status==null || status.trim().isEmpty())
@@ -154,6 +165,11 @@ public class OtherUtil
         return st == null ? OnlineStatus.ONLINE : st;
     }
     
+    /**
+     * Checks if the Java version is supported.
+     *
+     * @param prompt The prompt to use for displaying alerts.
+     */
     public static void checkJavaVersion(Prompt prompt)
     {
         if(!System.getProperty("java.vm.name").contains("64"))
@@ -161,6 +177,11 @@ public class OtherUtil
                     "It appears that you may not be using a supported Java version. Please use 64-bit java.");
     }
     
+    /**
+     * Checks for a new version of JMusicBot.
+     *
+     * @param prompt The prompt to use for displaying alerts.
+     */
     public static void checkVersion(Prompt prompt)
     {
         // Get current version number
@@ -175,6 +196,11 @@ public class OtherUtil
         }
     }
     
+    /**
+     * Gets the current version of JMusicBot.
+     *
+     * @return The current version string.
+     */
     public static String getCurrentVersion()
     {
         if(JMusicBot.class.getPackage()!=null && JMusicBot.class.getPackage().getImplementationVersion()!=null)
@@ -183,6 +209,11 @@ public class OtherUtil
             return "UNKNOWN";
     }
     
+    /**
+     * Gets the latest version of JMusicBot from GitHub.
+     *
+     * @return The latest version string.
+     */
     public static String getLatestVersion()
     {
         try
@@ -213,7 +244,9 @@ public class OtherUtil
     }
 
     /**
-     * Checks if the bot JMusicBot is being run on is supported & returns the reason if it is not.
+     * Checks if the bot is running on a supported platform and returns the reason if not.
+     *
+     * @param jda The JDA instance.
      * @return A string with the reason, or null if it is supported.
      */
     public static String getUnsupportedBotReason(JDA jda) 

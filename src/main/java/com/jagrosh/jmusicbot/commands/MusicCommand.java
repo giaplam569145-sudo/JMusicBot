@@ -28,15 +28,22 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
 /**
+ * A base class for music-related commands.
+ * This class provides common functionality for music commands, such as checking for a music channel and voice channel connection.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public abstract class MusicCommand extends Command 
+public abstract class MusicCommand extends Command
 {
     protected final Bot bot;
     protected boolean bePlaying;
     protected boolean beListening;
     
+    /**
+     * Constructs a new MusicCommand.
+     *
+     * @param bot The bot instance.
+     */
     public MusicCommand(Bot bot)
     {
         this.bot = bot;
@@ -100,5 +107,10 @@ public abstract class MusicCommand extends Command
         doCommand(event);
     }
     
+    /**
+     * The specific logic for the command.
+     *
+     * @param event The command event.
+     */
     public abstract void doCommand(CommandEvent event);
 }

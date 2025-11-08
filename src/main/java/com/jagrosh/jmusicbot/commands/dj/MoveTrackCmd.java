@@ -14,6 +14,11 @@ import com.jagrosh.jmusicbot.queue.AbstractQueue;
 public class MoveTrackCmd extends DJCommand
 {
 
+    /**
+     * Constructs a new MoveTrackCmd.
+     *
+     * @param bot The bot instance.
+     */
     public MoveTrackCmd(Bot bot)
     {
         super(bot);

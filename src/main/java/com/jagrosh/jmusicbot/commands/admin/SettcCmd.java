@@ -25,11 +25,17 @@ import com.jagrosh.jmusicbot.utils.FormatUtil;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 /**
+ * A command to set the text channel for music commands.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SettcCmd extends AdminCommand 
+public class SettcCmd extends AdminCommand
 {
+    /**
+     * Constructs a new SettcCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SettcCmd(Bot bot)
     {
         this.name = "settc";

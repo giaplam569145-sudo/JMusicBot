@@ -34,15 +34,21 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 
 /**
+ * A command to search YouTube for a provided query.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SearchCmd extends MusicCommand 
+public class SearchCmd extends MusicCommand
 {
     protected String searchPrefix = "ytsearch:";
     private final OrderedMenu.Builder builder;
     private final String searchingEmoji;
     
+    /**
+     * Constructs a new SearchCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SearchCmd(Bot bot)
     {
         super(bot);

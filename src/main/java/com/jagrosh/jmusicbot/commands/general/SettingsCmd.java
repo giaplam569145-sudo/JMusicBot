@@ -29,13 +29,19 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 /**
+ * A command to display the bot's settings for the current server.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SettingsCmd extends Command 
+public class SettingsCmd extends Command
 {
     private final static String EMOJI = "\uD83C\uDFA7"; // 🎧
     
+    /**
+     * Constructs a new SettingsCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SettingsCmd(Bot bot)
     {
         this.name = "settings";

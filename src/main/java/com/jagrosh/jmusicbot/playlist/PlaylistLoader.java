@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
+ * Manages loading and saving of playlists.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -42,6 +43,11 @@ public class PlaylistLoader
         this.config = config;
     }
     
+    /**
+     * Gets a list of all available playlist names.
+     *
+     * @return A list of playlist names.
+     */
     public List<String> getPlaylistNames()
     {
         if(folderExists())
@@ -57,6 +63,9 @@ public class PlaylistLoader
         }
     }
     
+    /**
+     * Creates the playlists folder if it does not exist.
+     */
     public void createFolder()
     {
         try
@@ -66,26 +75,56 @@ public class PlaylistLoader
         catch (IOException ignore) {}
     }
     
+    /**
+     * Checks if the playlists folder exists.
+     *
+     * @return True if the folder exists, false otherwise.
+     */
     public boolean folderExists()
     {
         return Files.exists(OtherUtil.getPath(config.getPlaylistsFolder()));
     }
     
+    /**
+     * Creates a new playlist file.
+     *
+     * @param name The name of the playlist.
+     * @throws IOException If an I/O error occurs.
+     */
     public void createPlaylist(String name) throws IOException
     {
         Files.createFile(OtherUtil.getPath(config.getPlaylistsFolder()+File.separator+name+".txt"));
     }
     
+    /**
+     * Deletes a playlist file.
+     *
+     * @param name The name of the playlist.
+     * @throws IOException If an I/O error occurs.
+     */
     public void deletePlaylist(String name) throws IOException
     {
         Files.delete(OtherUtil.getPath(config.getPlaylistsFolder()+File.separator+name+".txt"));
     }
     
+    /**
+     * Writes content to a playlist file.
+     *
+     * @param name The name of the playlist.
+     * @param text The content to write.
+     * @throws IOException If an I/O error occurs.
+     */
     public void writePlaylist(String name, String text) throws IOException
     {
         Files.write(OtherUtil.getPath(config.getPlaylistsFolder()+File.separator+name+".txt"), text.trim().getBytes());
     }
     
+    /**
+     * Gets a playlist by name.
+     *
+     * @param name The name of the playlist.
+     * @return The {@link Playlist} object, or null if not found.
+     */
     public Playlist getPlaylist(String name)
     {
         if(!getPlaylistNames().contains(name))

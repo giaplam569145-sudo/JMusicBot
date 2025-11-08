@@ -23,11 +23,17 @@ import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
+ * A command to vote to skip the current song.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkipCmd extends MusicCommand 
+public class SkipCmd extends MusicCommand
 {
+    /**
+     * Constructs a new SkipCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SkipCmd(Bot bot)
     {
         super(bot);

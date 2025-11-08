@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Stores metadata about a track request, including the user who requested it and the query used.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -34,22 +35,43 @@ public class RequestMetadata
     public final UserInfo user;
     public final RequestInfo requestInfo;
     
+    /**
+     * Constructs a new RequestMetadata object.
+     *
+     * @param user        The user who requested the track.
+     * @param requestInfo The information about the request.
+     */
     public RequestMetadata(User user, RequestInfo requestInfo)
     {
         this.user = user == null ? null : new UserInfo(user.getIdLong(), user.getName(), user.getDiscriminator(), user.getEffectiveAvatarUrl());
         this.requestInfo = requestInfo;
     }
     
+    /**
+     * Gets the ID of the user who requested the track.
+     *
+     * @return The owner's user ID.
+     */
     public long getOwner()
     {
         return user == null ? 0L : user.id;
     }
 
+    /**
+     * Creates a {@link RequestMetadata} object from an {@link AudioTrack} and a {@link CommandEvent}.
+     *
+     * @param track The audio track.
+     * @param event The command event.
+     * @return A new {@link RequestMetadata} object.
+     */
     public static RequestMetadata fromResultHandler(AudioTrack track, CommandEvent event)
     {
         return new RequestMetadata(event.getAuthor(), new RequestInfo(event.getArgs(), track.getInfo().uri));
     }
     
+    /**
+     * A class representing information about the track request.
+     */
     public static class RequestInfo
     {
         public final String query, url;
@@ -75,6 +97,9 @@ public class RequestMetadata
         }
     }
     
+    /**
+     * A class representing information about the user who requested the track.
+     */
     public static class UserInfo
     {
         public final long id;

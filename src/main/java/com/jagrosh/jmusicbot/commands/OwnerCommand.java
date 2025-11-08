@@ -18,11 +18,15 @@ package com.jagrosh.jmusicbot.commands;
 import com.jagrosh.jdautilities.command.Command;
 
 /**
+ * A base class for commands that can only be used by the bot owner.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public abstract class OwnerCommand extends Command
 {
+    /**
+     * Constructs a new OwnerCommand.
+     */
     public OwnerCommand()
     {
         this.category = new Category("Owner");

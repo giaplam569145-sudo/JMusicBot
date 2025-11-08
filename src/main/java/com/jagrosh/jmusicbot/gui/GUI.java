@@ -24,14 +24,20 @@ import com.jagrosh.jmusicbot.Bot;
 
 
 /**
+ * The main GUI window for the bot.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class GUI extends JFrame 
+public class GUI extends JFrame
 {
     private final ConsolePanel console;
     private final Bot bot;
     
+    /**
+     * Constructs a new GUI.
+     *
+     * @param bot The bot instance.
+     */
     public GUI(Bot bot) 
     {
         super();
@@ -39,6 +45,9 @@ public class GUI extends JFrame
         console = new ConsolePanel();
     }
     
+    /**
+     * Initializes the GUI.
+     */
     public void init()
     {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

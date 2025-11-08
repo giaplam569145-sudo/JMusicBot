@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.utils.FileUpload;
 
 /**
+ * A command to show debug information about the bot.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -37,6 +38,11 @@ public class DebugCmd extends OwnerCommand
 
     private final Bot bot;
 
+    /**
+     * Constructs a new DebugCmd.
+     *
+     * @param bot The bot instance.
+     */
     public DebugCmd(Bot bot)
     {
         this.bot = bot;

@@ -33,6 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * JDA event listener that handles various events for the bot.
+ * This class manages ready events, message deletions, voice updates, and guild joins.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -40,11 +42,21 @@ public class Listener extends ListenerAdapter
 {
     private final Bot bot;
     
+    /**
+     * Constructs the event listener.
+     *
+     * @param bot The bot instance.
+     */
     public Listener(Bot bot)
     {
         this.bot = bot;
     }
     
+    /**
+     * Handles the {@link ReadyEvent}, which is fired when JDA has successfully connected to Discord.
+     *
+     * @param event The ready event.
+     */
     @Override
     public void onReady(ReadyEvent event) 
     {
@@ -88,6 +100,11 @@ public class Listener extends ListenerAdapter
         }
     }
     
+    /**
+     * Handles the {@link MessageDeleteEvent}, which is fired when a message is deleted.
+     *
+     * @param event The message delete event.
+     */
     @Override
     public void onMessageDelete(MessageDeleteEvent event)
     {
@@ -96,18 +113,33 @@ public class Listener extends ListenerAdapter
         }
     }
 
+    /**
+     * Handles the {@link GuildVoiceUpdateEvent}, which is fired when a user's voice state changes.
+     *
+     * @param event The guild voice update event.
+     */
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event)
     {
         bot.getAloneInVoiceHandler().onVoiceUpdate(event);
     }
 
+    /**
+     * Handles the {@link ShutdownEvent}, which is fired when JDA is shutting down.
+     *
+     * @param event The shutdown event.
+     */
     @Override
     public void onShutdown(ShutdownEvent event) 
     {
         bot.shutdown();
     }
 
+    /**
+     * Handles the {@link GuildJoinEvent}, which is fired when the bot joins a new guild.
+     *
+     * @param event The guild join event.
+     */
     @Override
     public void onGuildJoin(GuildJoinEvent event) 
     {

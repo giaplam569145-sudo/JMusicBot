@@ -23,11 +23,17 @@ import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
+ * A command to set the volume of the music player.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class VolumeCmd extends DJCommand
 {
+    /**
+     * Constructs a new VolumeCmd.
+     *
+     * @param bot The bot instance.
+     */
     public VolumeCmd(Bot bot)
     {
         super(bot);

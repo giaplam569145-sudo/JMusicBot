@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 
 /**
+ * A command to stop the music and clear the queue.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class StopCmd extends DJCommand 
+public class StopCmd extends DJCommand
 {
+    /**
+     * Constructs a new StopCmd.
+     *
+     * @param bot The bot instance.
+     */
     public StopCmd(Bot bot)
     {
         super(bot);

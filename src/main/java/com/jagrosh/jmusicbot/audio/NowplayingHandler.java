@@ -34,6 +34,8 @@ import net.dv8tion.jda.api.utils.messages.MessageEditData;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 /**
+ * Manages the "now playing" messages for the bot.
+ * This class is responsible for updating the bot's status and sending/editing "now playing" messages.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -42,23 +44,41 @@ public class NowplayingHandler
     private final Bot bot;
     private final HashMap<Long,Pair<Long,Long>> lastNP; // guild -> channel,message
     
+    /**
+     * Constructs a new NowplayingHandler.
+     *
+     * @param bot The bot instance.
+     */
     public NowplayingHandler(Bot bot)
     {
         this.bot = bot;
         this.lastNP = new HashMap<>();
     }
     
+    /**
+     * Initializes the handler, starting the scheduled task to update "now playing" messages.
+     */
     public void init()
     {
         if(!bot.getConfig().useNPImages())
             bot.getThreadpool().scheduleWithFixedDelay(() -> updateAll(), 0, 5, TimeUnit.SECONDS);
     }
     
+    /**
+     * Sets the last "now playing" message for a guild.
+     *
+     * @param m The message to set as the last "now playing" message.
+     */
     public void setLastNPMessage(Message m)
     {
         lastNP.put(m.getGuild().getIdLong(), new Pair<>(m.getChannel().asTextChannel().getIdLong(), m.getIdLong()));
     }
     
+    /**
+     * Clears the last "now playing" message for a guild.
+     *
+     * @param guild The guild for which to clear the message.
+     */
     public void clearLastNPMessage(Guild guild)
     {
         lastNP.remove(guild.getIdLong());
@@ -102,6 +122,12 @@ public class NowplayingHandler
     }
 
     // "event"-based methods
+
+    /**
+     * Called when a track starts playing.
+     *
+     * @param track The track that is now playing.
+     */
     public void onTrackUpdate(AudioTrack track)
     {
         // update bot status if applicable
@@ -114,6 +140,12 @@ public class NowplayingHandler
         }
     }
     
+    /**
+     * Called when a message is deleted.
+     *
+     * @param guild     The guild where the message was deleted.
+     * @param messageId The ID of the deleted message.
+     */
     public void onMessageDelete(Guild guild, long messageId)
     {
         Pair<Long,Long> pair = lastNP.get(guild.getIdLong());

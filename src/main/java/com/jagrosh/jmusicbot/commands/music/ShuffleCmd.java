@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 
 /**
+ * A command to shuffle the user's songs in the queue.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class ShuffleCmd extends MusicCommand 
+public class ShuffleCmd extends MusicCommand
 {
+    /**
+     * Constructs a new ShuffleCmd.
+     *
+     * @param bot The bot instance.
+     */
     public ShuffleCmd(Bot bot)
     {
         super(bot);

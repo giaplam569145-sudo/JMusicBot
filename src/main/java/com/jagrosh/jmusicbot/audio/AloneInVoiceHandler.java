@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Handles the bot's behavior when it is left alone in a voice channel.
+ * This class will automatically stop playback and leave the channel after a configurable amount of time.
  *
  * @author Michaili K (mysteriouscursor+git@protonmail.com)
  */
@@ -36,11 +38,19 @@ public class AloneInVoiceHandler
     private final HashMap<Long, Instant> aloneSince = new HashMap<>();
     private long aloneTimeUntilStop = 0;
 
+    /**
+     * Constructs a new AloneInVoiceHandler.
+     *
+     * @param bot The bot instance.
+     */
     public AloneInVoiceHandler(Bot bot)
     {
         this.bot = bot;
     }
     
+    /**
+     * Initializes the handler, starting the scheduled check if the feature is enabled.
+     */
     public void init()
     {
         aloneTimeUntilStop = bot.getConfig().getAloneTimeUntilStop();
@@ -71,6 +81,12 @@ public class AloneInVoiceHandler
         toRemove.forEach(id -> aloneSince.remove(id));
     }
 
+    /**
+     * Handles a {@link GuildVoiceUpdateEvent}.
+     * This is used to detect when the bot is left alone in a voice channel.
+     *
+     * @param event The guild voice update event.
+     */
     public void onVoiceUpdate(GuildVoiceUpdateEvent event)
     {
         if(aloneTimeUntilStop <= 0) return;

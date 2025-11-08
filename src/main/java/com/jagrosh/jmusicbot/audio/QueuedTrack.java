@@ -22,6 +22,8 @@ import com.jagrosh.jmusicbot.queue.Queueable;
 import net.dv8tion.jda.api.entities.User;
 
 /**
+ * Represents a track that has been added to the queue.
+ * This class holds the {@link AudioTrack} and its associated {@link RequestMetadata}.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
@@ -30,6 +32,12 @@ public class QueuedTrack implements Queueable
     private final AudioTrack track;
     private final RequestMetadata requestMetadata;
 
+    /**
+     * Constructs a new QueuedTrack.
+     *
+     * @param track The {@link AudioTrack} to queue.
+     * @param rm    The {@link RequestMetadata} associated with the track.
+     */
     public QueuedTrack(AudioTrack track, RequestMetadata rm)
     {
         this.track = track;
@@ -46,11 +54,21 @@ public class QueuedTrack implements Queueable
         return requestMetadata.getOwner();
     }
     
+    /**
+     * Gets the {@link AudioTrack}.
+     *
+     * @return The audio track.
+     */
     public AudioTrack getTrack()
     {
         return track;
     }
 
+    /**
+     * Gets the {@link RequestMetadata}.
+     *
+     * @return The request metadata.
+     */
     public RequestMetadata getRequestMetadata()
     {
         return requestMetadata;

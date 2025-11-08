@@ -16,27 +16,44 @@
 package com.jagrosh.jmusicbot.entities;
 
 /**
+ * A generic class to hold a pair of objects.
  *
+ * @param <K> The type of the key.
+ * @param <V> The type of the value.
  * @author John Grosh (john.a.grosh@gmail.com)
- * @param <K>
- * @param <V>
  */
-public class Pair<K,V>
+public class Pair<K, V>
 {
     private final K key;
     private final V value;
     
+    /**
+     * Constructs a new Pair.
+     *
+     * @param key   The key object.
+     * @param value The value object.
+     */
     public Pair(K key, V value)
     {
         this.key = key;
         this.value = value;
     }
     
+    /**
+     * Gets the key of the pair.
+     *
+     * @return The key.
+     */
     public K getKey()
     {
         return key;
     }
     
+    /**
+     * Gets the value of the pair.
+     *
+     * @return The value.
+     */
     public V getValue()
     {
         return value;

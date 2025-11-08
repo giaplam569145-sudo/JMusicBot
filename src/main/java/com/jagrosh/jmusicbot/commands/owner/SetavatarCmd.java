@@ -24,11 +24,17 @@ import com.jagrosh.jmusicbot.utils.OtherUtil;
 import net.dv8tion.jda.api.entities.Icon;
 
 /**
+ * A command to set the bot's avatar.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SetavatarCmd extends OwnerCommand 
+public class SetavatarCmd extends OwnerCommand
 {
+    /**
+     * Constructs a new SetavatarCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SetavatarCmd(Bot bot)
     {
         this.name = "setavatar";

@@ -19,9 +19,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * A queue that attempts to fairly distribute tracks among users.
  *
+ * @param <T> The type of the items in the queue.
  * @author John Grosh (jagrosh)
- * @param <T>
  */
 public class FairQueue<T extends Queueable> extends AbstractQueue<T>
 {
@@ -32,6 +33,12 @@ public class FairQueue<T extends Queueable> extends AbstractQueue<T>
 
     protected final Set<Long> set = new HashSet<>();
 
+    /**
+     * Adds an item to the queue, attempting to place it fairly.
+     *
+     * @param item The item to add.
+     * @return The index at which the item was added.
+     */
     @Override
     public int add(T item)
     {

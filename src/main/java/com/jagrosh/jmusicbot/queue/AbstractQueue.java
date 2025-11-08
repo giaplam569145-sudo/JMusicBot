@@ -20,9 +20,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * An abstract base class for different queue implementations.
  *
+ * @param <T> The type of the items in the queue.
  * @author Wolfgang Schwendtbauer
- * @param <T>
  */
 public abstract class AbstractQueue<T extends Queueable>
 {
@@ -35,6 +36,12 @@ public abstract class AbstractQueue<T extends Queueable>
 
     public abstract int add(T item);
 
+    /**
+     * Adds an item at a specific index in the queue.
+     *
+     * @param index The index at which to add the item.
+     * @param item  The item to add.
+     */
     public void addAt(int index, T item)
     {
         if(index >= list.size())
@@ -43,33 +50,71 @@ public abstract class AbstractQueue<T extends Queueable>
             list.add(index, item);
     }
 
+    /**
+     * Gets the size of the queue.
+     *
+     * @return The number of items in the queue.
+     */
     public int size() {
         return list.size();
     }
 
+    /**
+     * Pulls the next item from the queue.
+     *
+     * @return The next item.
+     */
     public T pull() {
         return list.remove(0);
     }
 
+    /**
+     * Checks if the queue is empty.
+     *
+     * @return True if the queue is empty, false otherwise.
+     */
     public boolean isEmpty()
     {
         return list.isEmpty();
     }
 
+    /**
+     * Gets the list of items in the queue.
+     *
+     * @return The list of items.
+     */
     public List<T> getList()
     {
         return list;
     }
 
+    /**
+     * Gets an item at a specific index.
+     *
+     * @param index The index of the item.
+     * @return The item at the specified index.
+     */
     public T get(int index) {
         return list.get(index);
     }
 
+    /**
+     * Removes an item at a specific index.
+     *
+     * @param index The index of the item to remove.
+     * @return The removed item.
+     */
     public T remove(int index)
     {
         return list.remove(index);
     }
 
+    /**
+     * Removes all items with a specific identifier.
+     *
+     * @param identifier The identifier of the items to remove.
+     * @return The number of items removed.
+     */
     public int removeAll(long identifier)
     {
         int count = 0;
@@ -84,11 +129,20 @@ public abstract class AbstractQueue<T extends Queueable>
         return count;
     }
 
+    /**
+     * Clears the queue.
+     */
     public void clear()
     {
         list.clear();
     }
 
+    /**
+     * Shuffles the items with a specific identifier.
+     *
+     * @param identifier The identifier of the items to shuffle.
+     * @return The number of items shuffled.
+     */
     public int shuffle(long identifier)
     {
         List<Integer> iset = new ArrayList<>();
@@ -108,6 +162,11 @@ public abstract class AbstractQueue<T extends Queueable>
         return iset.size();
     }
 
+    /**
+     * Skips a number of items in the queue.
+     *
+     * @param number The number of items to skip.
+     */
     public void skip(int number)
     {
         if (number > 0) {
@@ -116,10 +175,11 @@ public abstract class AbstractQueue<T extends Queueable>
     }
 
     /**
-     * Move an item to a different position in the list
-     * @param from The position of the item
-     * @param to The new position of the item
-     * @return the moved item
+     * Moves an item to a different position in the list.
+     *
+     * @param from The position of the item.
+     * @param to   The new position of the item.
+     * @return The moved item.
      */
     public T moveItem(int from, int to)
     {

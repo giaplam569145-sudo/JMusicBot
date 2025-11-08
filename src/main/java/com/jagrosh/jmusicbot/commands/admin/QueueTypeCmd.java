@@ -23,11 +23,17 @@ import com.jagrosh.jmusicbot.settings.QueueType;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
+ * A command to change the queue type for the server.
  *
  * @author Wolfgang Schwendtbauer
  */
 public class QueueTypeCmd extends AdminCommand
 {
+    /**
+     * Constructs a new QueueTypeCmd.
+     *
+     * @param bot The bot instance.
+     */
     public QueueTypeCmd(Bot bot)
     {
         super();

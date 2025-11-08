@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 
 /**
+ * A command to skip to a specific song in the queue.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkiptoCmd extends DJCommand 
+public class SkiptoCmd extends DJCommand
 {
+    /**
+     * Constructs a new SkiptoCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SkiptoCmd(Bot bot)
     {
         super(bot);

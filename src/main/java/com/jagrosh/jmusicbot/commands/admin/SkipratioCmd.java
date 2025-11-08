@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
+ * A command to set the skip ratio for the server.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public class SkipratioCmd extends AdminCommand
 {
+    /**
+     * Constructs a new SkipratioCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SkipratioCmd(Bot bot)
     {
         this.name = "setskip";

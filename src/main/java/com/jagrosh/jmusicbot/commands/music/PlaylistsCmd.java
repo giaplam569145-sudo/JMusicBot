@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 
 /**
+ * A command to show the available playlists.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PlaylistsCmd extends MusicCommand 
+public class PlaylistsCmd extends MusicCommand
 {
+    /**
+     * Constructs a new PlaylistsCmd.
+     *
+     * @param bot The bot instance.
+     */
     public PlaylistsCmd(Bot bot)
     {
         super(bot);

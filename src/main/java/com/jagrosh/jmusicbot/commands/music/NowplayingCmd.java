@@ -23,11 +23,17 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 /**
+ * A command to show the currently playing song.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class NowplayingCmd extends MusicCommand 
+public class NowplayingCmd extends MusicCommand
 {
+    /**
+     * Constructs a new NowplayingCmd.
+     *
+     * @param bot The bot instance.
+     */
     public NowplayingCmd(Bot bot)
     {
         super(bot);

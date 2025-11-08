@@ -30,6 +30,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.Message;
 
 /**
+ * A command to play a song next in the queue.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -37,6 +38,11 @@ public class PlaynextCmd extends DJCommand
 {
     private final String loadingEmoji;
     
+    /**
+     * Constructs a new PlaynextCmd.
+     *
+     * @param bot The bot instance.
+     */
     public PlaynextCmd(Bot bot)
     {
         super(bot);

@@ -22,11 +22,17 @@ import com.jagrosh.jmusicbot.settings.RepeatMode;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
+ * A command to set the repeat mode for the server.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class RepeatCmd extends DJCommand
 {
+    /**
+     * Constructs a new RepeatCmd.
+     *
+     * @param bot The bot instance.
+     */
     public RepeatCmd(Bot bot)
     {
         super(bot);

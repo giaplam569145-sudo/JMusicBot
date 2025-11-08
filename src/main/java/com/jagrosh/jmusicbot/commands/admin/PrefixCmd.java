@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.commands.AdminCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
+ * A command to set a server-specific prefix for the bot.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public class PrefixCmd extends AdminCommand
 {
+    /**
+     * Constructs a new PrefixCmd.
+     *
+     * @param bot The bot instance.
+     */
     public PrefixCmd(Bot bot)
     {
         this.name = "prefix";

@@ -23,11 +23,17 @@ import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
+ * A command to force skip the current song.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class ForceskipCmd extends DJCommand 
+public class ForceskipCmd extends DJCommand
 {
+    /**
+     * Constructs a new ForceskipCmd.
+     *
+     * @param bot The bot instance.
+     */
     public ForceskipCmd(Bot bot)
     {
         super(bot);
