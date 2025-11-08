@@ -41,10 +41,12 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 
 /**
+ * The main class for JMusicBot, responsible for initializing and starting the bot.
+ * This class handles command-line arguments, configuration loading, JDA setup, and command client creation.
  *
  * @author John Grosh (jagrosh)
  */
-public class JMusicBot 
+public class JMusicBot
 {
     public final static Logger LOG = LoggerFactory.getLogger(JMusicBot.class);
     public final static Permission[] RECOMMENDED_PERMS = {Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
@@ -53,7 +55,9 @@ public class JMusicBot
     public final static GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.MESSAGE_CONTENT};
     
     /**
-     * @param args the command line arguments
+     * The main entry point of the bot.
+     *
+     * @param args The command-line arguments.
      */
     public static void main(String[] args)
     {

@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 
 /**
+ * A command to pause the current song.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PauseCmd extends DJCommand 
+public class PauseCmd extends DJCommand
 {
+    /**
+     * Constructs a new PauseCmd.
+     *
+     * @param bot The bot instance.
+     */
     public PauseCmd(Bot bot)
     {
         super(bot);

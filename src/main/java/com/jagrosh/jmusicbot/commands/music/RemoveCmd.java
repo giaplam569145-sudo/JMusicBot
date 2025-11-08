@@ -25,11 +25,17 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 
 /**
+ * A command to remove a song from the queue.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class RemoveCmd extends MusicCommand 
+public class RemoveCmd extends MusicCommand
 {
+    /**
+     * Constructs a new RemoveCmd.
+     *
+     * @param bot The bot instance.
+     */
     public RemoveCmd(Bot bot)
     {
         super(bot);

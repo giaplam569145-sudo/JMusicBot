@@ -15,9 +15,18 @@
  */
 package com.jagrosh.jmusicbot.utils;
 
+/**
+ * A utility class for formatting and parsing time strings.
+ */
 public class TimeUtil
 {
 
+    /**
+     * Formats a duration into a string.
+     *
+     * @param duration The duration in milliseconds.
+     * @return The formatted time string.
+     */
     public static String formatTime(long duration)
     {
         if(duration == Long.MAX_VALUE)
@@ -32,9 +41,10 @@ public class TimeUtil
 
     /**
      * Parses a seek time string into milliseconds and determines if it's relative.
-     * Supports "colon time" (HH:MM:SS) or "unit time" (1h20m)
-     * @param args time string
-     * @return SeekTime object, or null if the string could not be parsed
+     * Supports "colon time" (HH:MM:SS) or "unit time" (1h20m).
+     *
+     * @param args The time string.
+     * @return A {@link SeekTime} object, or null if the string could not be parsed.
      */
     public static SeekTime parseTime(String args)
     {
@@ -60,8 +70,10 @@ public class TimeUtil
     }
 
     /**
-     * @param timestamp timestamp formatted as: [+ | -] &lt;HH:MM:SS | MM:SS | SS&gt;
-     * @return Time in milliseconds
+     * Parses a colon-separated time string.
+     *
+     * @param timestamp The timestamp formatted as: [+ | -] &lt;HH:MM:SS | MM:SS | SS&gt;.
+     * @return The time in milliseconds.
      */
     public static long parseColonTime(String timestamp)
     {
@@ -87,9 +99,10 @@ public class TimeUtil
     }
 
     /**
+     * Parses a unit-based time string.
      *
-     * @param timestr time string formatted as a unit time, e.g. 20m10, 1d5h20m14s or 1h and 20m
-     * @return Time in milliseconds
+     * @param timestr The time string formatted as a unit time, e.g., "20m10s", "1d5h20m14s", or "1h and 20m".
+     * @return The time in milliseconds.
      */
     public static long parseUnitTime(String timestr)
     {
@@ -124,6 +137,9 @@ public class TimeUtil
         return time;
     }
 
+    /**
+     * A class representing a seek time, with milliseconds and a relative flag.
+     */
     public static class SeekTime
     {
         public final long milliseconds;

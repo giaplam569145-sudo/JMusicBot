@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * An enum representing the different types of queues available in the bot.
  *
  * @author Wolfgang Schwendtbauer
  */
@@ -45,6 +46,11 @@ public enum QueueType
         this.supplier = supplier;
     }
 
+    /**
+     * Gets a list of the names of all queue types.
+     *
+     * @return A list of queue type names.
+     */
     public static List<String> getNames()
     {
         return Arrays.stream(QueueType.values())
@@ -52,16 +58,33 @@ public enum QueueType
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Creates a new instance of the queue.
+     *
+     * @param previous The previous queue, used for transferring items.
+     * @param <T>      The type of the items in the queue.
+     * @return A new queue instance.
+     */
     public <T extends Queueable> AbstractQueue<T> createInstance(AbstractQueue<T> previous)
     {
         return supplier.apply(previous);
     }
 
+    /**
+     * Gets the user-friendly name of the queue type.
+     *
+     * @return The user-friendly name.
+     */
     public String getUserFriendlyName()
     {
         return userFriendlyName;
     }
 
+    /**
+     * Gets the emoji associated with the queue type.
+     *
+     * @return The emoji.
+     */
     public String getEmoji()
     {
         return emoji;

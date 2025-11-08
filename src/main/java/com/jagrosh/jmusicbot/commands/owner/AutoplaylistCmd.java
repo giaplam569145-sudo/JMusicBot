@@ -21,6 +21,7 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import com.jagrosh.jmusicbot.settings.Settings;
 
 /**
+ * A command to set the default playlist for a server.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
@@ -28,6 +29,11 @@ public class AutoplaylistCmd extends OwnerCommand
 {
     private final Bot bot;
     
+    /**
+     * Constructs a new AutoplaylistCmd.
+     *
+     * @param bot The bot instance.
+     */
     public AutoplaylistCmd(Bot bot)
     {
         this.bot = bot;

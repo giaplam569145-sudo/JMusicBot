@@ -33,6 +33,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 
 /**
+ * The main bot class, responsible for coordinating all modules and components of the JMusicBot.
+ * This class holds references to managers, handlers, and the JDA instance.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
@@ -51,6 +53,13 @@ public class Bot
     private JDA jda;
     private GUI gui;
     
+    /**
+     * Constructs the Bot object, initializing all managers and handlers.
+     *
+     * @param waiter   The EventWaiter for handling asynchronous events.
+     * @param config   The bot's configuration settings.
+     * @param settings The manager for guild-specific settings.
+     */
     public Bot(EventWaiter waiter, BotConfig config, SettingsManager settings)
     {
         this.waiter = waiter;
@@ -66,51 +75,101 @@ public class Bot
         this.aloneInVoiceHandler.init();
     }
     
+    /**
+     * Gets the bot's configuration.
+     *
+     * @return The {@link BotConfig} object.
+     */
     public BotConfig getConfig()
     {
         return config;
     }
     
+    /**
+     * Gets the settings manager.
+     *
+     * @return The {@link SettingsManager} object.
+     */
     public SettingsManager getSettingsManager()
     {
         return settings;
     }
     
+    /**
+     * Gets the event waiter.
+     *
+     * @return The {@link EventWaiter} object.
+     */
     public EventWaiter getWaiter()
     {
         return waiter;
     }
     
+    /**
+     * Gets the scheduled executor service.
+     *
+     * @return The {@link ScheduledExecutorService} for background tasks.
+     */
     public ScheduledExecutorService getThreadpool()
     {
         return threadpool;
     }
     
+    /**
+     * Gets the player manager.
+     *
+     * @return The {@link PlayerManager} for handling audio players.
+     */
     public PlayerManager getPlayerManager()
     {
         return players;
     }
     
+    /**
+     * Gets the playlist loader.
+     *
+     * @return The {@link PlaylistLoader} for managing playlists.
+     */
     public PlaylistLoader getPlaylistLoader()
     {
         return playlists;
     }
     
+    /**
+     * Gets the now playing handler.
+     *
+     * @return The {@link NowplayingHandler} for managing "now playing" messages.
+     */
     public NowplayingHandler getNowplayingHandler()
     {
         return nowplaying;
     }
 
+    /**
+     * Gets the alone in voice handler.
+     *
+     * @return The {@link AloneInVoiceHandler} for managing the bot's behavior when left alone in a voice channel.
+     */
     public AloneInVoiceHandler getAloneInVoiceHandler()
     {
         return aloneInVoiceHandler;
     }
     
+    /**
+     * Gets the JDA instance.
+     *
+     * @return The {@link JDA} object.
+     */
     public JDA getJDA()
     {
         return jda;
     }
     
+    /**
+     * Closes the audio connection for a specific guild.
+     *
+     * @param guildId The ID of the guild.
+     */
     public void closeAudioConnection(long guildId)
     {
         Guild guild = jda.getGuildById(guildId);
@@ -118,6 +177,9 @@ public class Bot
             threadpool.submit(() -> guild.getAudioManager().closeAudioConnection());
     }
     
+    /**
+     * Resets the bot's Rich Presence (game status).
+     */
     public void resetGame()
     {
         Activity game = config.getGame()==null || config.getGame().getName().equalsIgnoreCase("none") ? null : config.getGame();
@@ -125,6 +187,9 @@ public class Bot
             jda.getPresence().setActivity(game);
     }
 
+    /**
+     * Shuts down the bot, closing all connections and exiting the application.
+     */
     public void shutdown()
     {
         if(shuttingDown)
@@ -150,11 +215,21 @@ public class Bot
         System.exit(0);
     }
 
+    /**
+     * Sets the JDA instance.
+     *
+     * @param jda The {@link JDA} instance to set.
+     */
     public void setJDA(JDA jda)
     {
         this.jda = jda;
     }
     
+    /**
+     * Sets the GUI instance.
+     *
+     * @param gui The {@link GUI} instance to set.
+     */
     public void setGUI(GUI gui)
     {
         this.gui = gui;

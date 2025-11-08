@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * A utility class for handling user prompts, supporting both GUI and command-line interfaces.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -33,16 +34,35 @@ public class Prompt
     private boolean noprompt;
     private Scanner scanner;
     
+    /**
+     * Constructs a new Prompt with a title.
+     *
+     * @param title The title of the prompt.
+     */
     public Prompt(String title)
     {
         this(title, null);
     }
     
+    /**
+     * Constructs a new Prompt with a title and a "no GUI" message.
+     *
+     * @param title        The title of the prompt.
+     * @param noguiMessage The message to display when switching to "no GUI" mode.
+     */
     public Prompt(String title, String noguiMessage)
     {
         this(title, noguiMessage, "true".equalsIgnoreCase(System.getProperty("nogui")), "true".equalsIgnoreCase(System.getProperty("noprompt")));
     }
     
+    /**
+     * Constructs a new Prompt with detailed settings.
+     *
+     * @param title        The title of the prompt.
+     * @param noguiMessage The message to display when switching to "no GUI" mode.
+     * @param nogui        Whether to start in "no GUI" mode.
+     * @param noprompt     Whether to disable prompts.
+     */
     public Prompt(String title, String noguiMessage, boolean nogui, boolean noprompt)
     {
         this.title = title;
@@ -51,11 +71,23 @@ public class Prompt
         this.noprompt = noprompt;
     }
     
+    /**
+     * Checks if the prompt is in "no GUI" mode.
+     *
+     * @return True if in "no GUI" mode, false otherwise.
+     */
     public boolean isNoGUI()
     {
         return nogui;
     }
     
+    /**
+     * Displays an alert to the user.
+     *
+     * @param level   The severity level of the alert.
+     * @param context The context of the alert.
+     * @param message The message to display.
+     */
     public void alert(Level level, String context, String message)
     {
         if(nogui)
@@ -108,6 +140,12 @@ public class Prompt
         }
     }
     
+    /**
+     * Prompts the user for input.
+     *
+     * @param content The message to display to the user.
+     * @return The user's input, or null if prompts are disabled.
+     */
     public String prompt(String content)
     {
         if(noprompt)
@@ -145,6 +183,9 @@ public class Prompt
         }
     }
     
+    /**
+     * Enum representing the severity level of an alert.
+     */
     public static enum Level
     {
         INFO, WARNING, ERROR;

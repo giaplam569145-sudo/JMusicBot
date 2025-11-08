@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 
 /**
+ * A command to fetch the lyrics of a song.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -31,6 +32,11 @@ public class LyricsCmd extends MusicCommand
 {
     private final LyricsClient client = new LyricsClient();
     
+    /**
+     * Constructs a new LyricsCmd.
+     *
+     * @param bot The bot instance.
+     */
     public LyricsCmd(Bot bot)
     {
         super(bot);

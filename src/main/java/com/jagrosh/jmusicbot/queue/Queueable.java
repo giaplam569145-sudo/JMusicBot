@@ -16,10 +16,17 @@
 package com.jagrosh.jmusicbot.queue;
 
 /**
+ * An interface for objects that can be added to the queue.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public interface Queueable {
     
+    /**
+     * Gets the identifier of the object.
+     * This is used to identify the user who requested the item.
+     *
+     * @return The identifier.
+     */
     public long getIdentifier();
 }

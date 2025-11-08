@@ -16,11 +16,19 @@
 package com.jagrosh.jmusicbot.queue;
 
 /**
+ * A functional interface for creating queue instances.
  *
  * @author Wolfgang Schwendtbauer
  */
 @FunctionalInterface
 public interface QueueSupplier
 {
+    /**
+     * Creates a new queue instance.
+     *
+     * @param queue The previous queue, used for transferring items.
+     * @param <T>   The type of the items in the queue.
+     * @return A new queue instance.
+     */
     <T extends Queueable> AbstractQueue<T> apply(AbstractQueue<T> queue);
 }

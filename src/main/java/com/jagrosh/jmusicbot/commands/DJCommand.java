@@ -22,17 +22,29 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
 
 /**
+ * A base class for commands that require DJ permissions.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
 public abstract class DJCommand extends MusicCommand
 {
+    /**
+     * Constructs a new DJCommand.
+     *
+     * @param bot The bot instance.
+     */
     public DJCommand(Bot bot)
     {
         super(bot);
         this.category = new Category("DJ", event -> checkDJPermission(event));
     }
     
+    /**
+     * Checks if a user has DJ permissions.
+     *
+     * @param event The command event.
+     * @return True if the user has DJ permissions, false otherwise.
+     */
     public static boolean checkDJPermission(CommandEvent event)
     {
         if(event.getAuthor().getId().equals(event.getClient().getOwnerId()))

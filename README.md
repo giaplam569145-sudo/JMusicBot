@@ -60,6 +60,49 @@ Please see the [Setup Page](https://jmusicbot.com/setup) to run this bot yoursel
 ## Questions/Suggestions/Bug Reports
 **Please check the [Issues List](https://github.com/giaplam569145-sudo/JMusicBot/issues) before suggesting a feature**. If you have a question, need troubleshooting help, or want to brainstorm a new feature, please start a [Discussion](https://github.com/giaplam569145-sudo/JMusicBot/discussions). If you'd like to suggest a feature or report a reproducible bug, please open an [Issue](https://github.com/giaplam569145-sudo/JMusicBot/issues) on this repository. If you like this bot, be sure to add a star to the libraries that make this possible: [**JDA**](https://github.com/DV8FromTheWorld/JDA) and [**lavaplayer**](https://github.com/sedmelluq/lavaplayer)!
 
+## Commands
+### Music
+*   `!play <song|URL>`: Plays a song or adds it to the queue.
+*   `!playlists`: Shows the available playlists.
+*   `!nowplaying`: Shows the currently playing song.
+*   `!remove <position|ALL>`: Removes a song from the queue.
+*   `!scsearch <query>`: Searches SoundCloud.
+*   `!search <query>`: Searches YouTube.
+*   `!seek <time>`: Seeks to a specific time in the song.
+*   `!shuffle`: Shuffles the queue.
+*   `!skip`: Votes to skip the current song.
+*   `!lyrics [song]`: Shows the lyrics of a song.
+
+### DJ
+*   `!forceremove <user>`: Removes all entries by a user from the queue.
+*   `!forceskip`: Skips the current song.
+*   `!movetrack <from> <to>`: Moves a track in the queue.
+*   `!pause`: Pauses the current song.
+*   `!playnext <song|URL>`: Plays a song next.
+*   `!repeat [off|all|single]`: Sets the repeat mode.
+*   `!skipto <position>`: Skips to a specific song in the queue.
+*   `!stop`: Stops the music and clears the queue.
+*   `!volume [0-150]`: Sets the volume.
+
+### Admin
+*   `!prefix <prefix|NONE>`: Sets a server-specific prefix.
+*   `!queuetype [linear|fair]`: Changes the queue type.
+*   `!setdj <rolename|NONE>`: Sets the DJ role.
+*   `!settc <channel|NONE>`: Sets the text channel for music commands.
+*   `!setvc <channel|NONE>`: Sets the voice channel for music.
+*   `!setskip <0-100>`: Sets the skip percentage.
+
+### Owner
+*   `!autoplaylist <name|NONE>`: Sets the default playlist.
+*   `!debug`: Shows debug info.
+*   `!eval <code>`: Evaluates Nashorn code.
+*   `!playlist <append|delete|make>`: Manages playlists.
+*   `!setavatar <url>`: Sets the bot's avatar.
+*   `!setgame [game]`: Sets the bot's game.
+*   `!setname <name>`: Sets the bot's name.
+*   `!setstatus <status>`: Sets the bot's status.
+*   `!shutdown`: Shuts down the bot.
+
 ## Distribution
 When distributing builds of this project, you must comply with the terms of the Apache License 2.0. This includes retaining the `LICENSE` file and any `NOTICE` files, as well as providing clear attribution to the original JMusicBot project by jagrosh.
 

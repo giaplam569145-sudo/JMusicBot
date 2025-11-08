@@ -18,11 +18,17 @@ package com.jagrosh.jmusicbot.commands.music;
 import com.jagrosh.jmusicbot.Bot;
 
 /**
+ * A command to search SoundCloud for a provided query.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SCSearchCmd extends SearchCmd 
+public class SCSearchCmd extends SearchCmd
 {
+    /**
+     * Constructs a new SCSearchCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SCSearchCmd(Bot bot)
     {
         super(bot);

@@ -16,9 +16,10 @@
 package com.jagrosh.jmusicbot.queue;
 
 /**
+ * A standard, first-in, first-out queue.
  *
+ * @param <T> The type of the items in the queue.
  * @author Wolfgang Schwendtbauer
- * @param <T>
  */
 public class LinearQueue<T extends Queueable> extends AbstractQueue<T>
 {
@@ -27,6 +28,12 @@ public class LinearQueue<T extends Queueable> extends AbstractQueue<T>
         super(queue);
     }
 
+    /**
+     * Adds an item to the end of the queue.
+     *
+     * @param item The item to add.
+     * @return The index at which the item was added.
+     */
     @Override
     public int add(T item)
     {

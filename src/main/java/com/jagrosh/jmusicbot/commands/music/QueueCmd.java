@@ -35,13 +35,19 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
 /**
+ * A command to show the current music queue.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class QueueCmd extends MusicCommand 
+public class QueueCmd extends MusicCommand
 {
     private final Paginator.Builder builder;
     
+    /**
+     * Constructs a new QueueCmd.
+     *
+     * @param bot The bot instance.
+     */
     public QueueCmd(Bot bot)
     {
         super(bot);

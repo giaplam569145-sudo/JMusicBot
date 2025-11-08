@@ -38,6 +38,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
 /**
+ * A command to play a song.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
@@ -48,6 +49,11 @@ public class PlayCmd extends MusicCommand
     
     private final String loadingEmoji;
     
+    /**
+     * Constructs a new PlayCmd.
+     *
+     * @param bot The bot instance.
+     */
     public PlayCmd(Bot bot)
     {
         super(bot);

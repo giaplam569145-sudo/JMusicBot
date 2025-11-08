@@ -25,11 +25,17 @@ import com.jagrosh.jmusicbot.utils.FormatUtil;
 import net.dv8tion.jda.api.entities.Role;
 
 /**
+ * A command to set the DJ role for the server.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetdjCmd extends AdminCommand
 {
+    /**
+     * Constructs a new SetdjCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SetdjCmd(Bot bot)
     {
         this.name = "setdj";

@@ -21,11 +21,17 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import net.dv8tion.jda.api.OnlineStatus;
 
 /**
+ * A command to set the bot's status.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class SetstatusCmd extends OwnerCommand
 {
+    /**
+     * Constructs a new SetstatusCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SetstatusCmd(Bot bot)
     {
         this.name = "setstatus";

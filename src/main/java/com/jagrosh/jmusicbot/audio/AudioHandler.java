@@ -45,10 +45,12 @@ import net.dv8tion.jda.api.entities.User;
 import org.slf4j.LoggerFactory;
 
 /**
+ * The core audio handling class for a guild.
+ * This class manages the audio player, track queue, and event handling.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
+public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
 {
     public final static String PLAY_EMOJI  = "\u25B6"; // ▶
     public final static String PAUSE_EMOJI = "\u23F8"; // ⏸
@@ -74,11 +76,22 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         this.setQueueType(manager.getBot().getSettingsManager().getSettings(guildId).getQueueType());
     }
 
+    /**
+     * Sets the queue type for the audio handler.
+     *
+     * @param type The {@link QueueType} to use.
+     */
     public void setQueueType(QueueType type)
     {
         queue = type.createInstance(queue);
     }
 
+    /**
+     * Adds a track to the front of the queue.
+     *
+     * @param qtrack The {@link QueuedTrack} to add.
+     * @return The position of the track in the queue, or -1 if it was played immediately.
+     */
     public int addTrackToFront(QueuedTrack qtrack)
     {
         if(audioPlayer.getPlayingTrack()==null)
@@ -93,6 +106,12 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         }
     }
     
+    /**
+     * Adds a track to the end of the queue.
+     *
+     * @param qtrack The {@link QueuedTrack} to add.
+     * @return The position of the track in the queue, or -1 if it was played immediately.
+     */
     public int addTrack(QueuedTrack qtrack)
     {
         if(audioPlayer.getPlayingTrack()==null)
@@ -104,11 +123,19 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
             return queue.add(qtrack);
     }
     
+    /**
+     * Gets the current track queue.
+     *
+     * @return The {@link AbstractQueue} of {@link QueuedTrack}s.
+     */
     public AbstractQueue<QueuedTrack> getQueue()
     {
         return queue;
     }
     
+    /**
+     * Stops the player and clears the queue.
+     */
     public void stopAndClear()
     {
         queue.clear();
@@ -117,21 +144,42 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         //current = null;
     }
     
+    /**
+     * Checks if music is currently playing.
+     *
+     * @param jda The JDA instance.
+     * @return True if music is playing, false otherwise.
+     */
     public boolean isMusicPlaying(JDA jda)
     {
         return guild(jda).getSelfMember().getVoiceState().getChannel() != null && audioPlayer.getPlayingTrack()!=null;
     }
     
+    /**
+     * Gets the set of user IDs who have voted to skip the current track.
+     *
+     * @return The set of voter IDs.
+     */
     public Set<String> getVotes()
     {
         return votes;
     }
     
+    /**
+     * Gets the audio player.
+     *
+     * @return The {@link AudioPlayer}.
+     */
     public AudioPlayer getPlayer()
     {
         return audioPlayer;
     }
     
+    /**
+     * Gets the request metadata for the currently playing track.
+     *
+     * @return The {@link RequestMetadata}.
+     */
     public RequestMetadata getRequestMetadata()
     {
         if(audioPlayer.getPlayingTrack() == null)
@@ -140,6 +188,11 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         return rm == null ? RequestMetadata.EMPTY : rm;
     }
     
+    /**
+     * Plays from the default playlist if the queue is empty.
+     *
+     * @return True if playback from the default playlist was started, false otherwise.
+     */
     public boolean playFromDefault()
     {
         if(!defaultQueue.isEmpty())
@@ -216,6 +269,13 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
 
     
     // Formatting
+
+    /**
+     * Gets the "now playing" message for the current track.
+     *
+     * @param jda The JDA instance.
+     * @return A {@link MessageCreateData} object for the "now playing" message.
+     */
     public MessageCreateData getNowPlaying(JDA jda)
     {
         if(isMusicPlaying(jda))
@@ -264,6 +324,12 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
         else return null;
     }
 
+    /**
+     * Gets a message indicating that no music is playing.
+     *
+     * @param jda The JDA instance.
+     * @return A {@link MessageCreateData} object for the "no music playing" message.
+     */
     public MessageCreateData getNoMusicPlaying(JDA jda)
     {
         Guild guild = guild(jda);
@@ -276,6 +342,11 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                 .build()).build();
     }
 
+    /**
+     * Gets the status emoji (play or pause).
+     *
+     * @return The emoji string.
+     */
     public String getStatusEmoji()
     {
         return audioPlayer.isPaused() ? PAUSE_EMOJI : PLAY_EMOJI;

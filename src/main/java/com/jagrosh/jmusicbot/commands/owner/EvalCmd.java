@@ -23,14 +23,20 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 
 /**
+ * A command to evaluate Nashorn code.
  *
  * @author John Grosh (jagrosh)
  */
-public class EvalCmd extends OwnerCommand 
+public class EvalCmd extends OwnerCommand
 {
     private final Bot bot;
     private final String engine;
     
+    /**
+     * Constructs a new EvalCmd.
+     *
+     * @param bot The bot instance.
+     */
     public EvalCmd(Bot bot)
     {
         this.bot = bot;

@@ -28,12 +28,19 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * A command to seek the current song to a specific time.
+ *
  * @author Whew., Inc.
  */
 public class SeekCmd extends MusicCommand
 {
     private final static Logger LOG = LoggerFactory.getLogger("Seeking");
     
+    /**
+     * Constructs a new SeekCmd.
+     *
+     * @param bot The bot instance.
+     */
     public SeekCmd(Bot bot)
     {
         super(bot);

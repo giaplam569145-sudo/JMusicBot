@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * A custom audio source manager that transforms URLs before loading them.
+ * This is used to support custom sources that are not natively supported by Lavaplayer.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -44,6 +46,15 @@ public class TransformativeAudioSourceManager extends YoutubeAudioSourceManager
         this(name, object.getString("regex"), object.getString("replacement"), object.getString("selector"), object.getString("format"));
     }
     
+    /**
+     * Constructs a new TransformativeAudioSourceManager.
+     *
+     * @param name        The name of the source.
+     * @param regex       The regex to match URLs.
+     * @param replacement The replacement string for the URL.
+     * @param selector    The CSS selector to find the transformed value.
+     * @param format      The format string for the final URL.
+     */
     public TransformativeAudioSourceManager(String name, String regex, String replacement, String selector, String format)
     {
         this.name = name;
@@ -87,6 +98,12 @@ public class TransformativeAudioSourceManager extends YoutubeAudioSourceManager
         return null;
     }
     
+    /**
+     * Creates a list of {@link TransformativeAudioSourceManager}s from a configuration.
+     *
+     * @param transforms The configuration object.
+     * @return A list of transformative audio source managers.
+     */
     public static List<TransformativeAudioSourceManager> createTransforms(Config transforms)
     {
         try

@@ -24,12 +24,19 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
 
 /**
+ * A command for managing playlists.
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class PlaylistCmd extends OwnerCommand 
+public class PlaylistCmd extends OwnerCommand
 {
     private final Bot bot;
+
+    /**
+     * Constructs a new PlaylistCmd.
+     *
+     * @param bot The bot instance.
+     */
     public PlaylistCmd(Bot bot)
     {
         this.bot = bot;

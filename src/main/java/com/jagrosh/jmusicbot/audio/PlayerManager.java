@@ -33,6 +33,8 @@ import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.entities.Guild;
 
 /**
+ * Manages the audio players and source managers for the bot.
+ * This class extends {@link DefaultAudioPlayerManager} to handle audio playback.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -40,11 +42,19 @@ public class PlayerManager extends DefaultAudioPlayerManager
 {
     private final Bot bot;
     
+    /**
+     * Constructs a new PlayerManager.
+     *
+     * @param bot The bot instance.
+     */
     public PlayerManager(Bot bot)
     {
         this.bot = bot;
     }
     
+    /**
+     * Initializes the player manager, registering all necessary audio source managers.
+     */
     public void init()
     {
         TransformativeAudioSourceManager.createTransforms(bot.getConfig().getTransforms()).forEach(t -> registerSourceManager(t));
@@ -67,16 +77,33 @@ public class PlayerManager extends DefaultAudioPlayerManager
         DuncteBotSources.registerAll(this, "en-US");
     }
     
+    /**
+     * Gets the bot instance.
+     *
+     * @return The bot instance.
+     */
     public Bot getBot()
     {
         return bot;
     }
     
+    /**
+     * Checks if a guild has an audio handler.
+     *
+     * @param guild The guild to check.
+     * @return True if the guild has an audio handler, false otherwise.
+     */
     public boolean hasHandler(Guild guild)
     {
         return guild.getAudioManager().getSendingHandler()!=null;
     }
     
+    /**
+     * Sets up an audio handler for a guild.
+     *
+     * @param guild The guild to set up the handler for.
+     * @return The {@link AudioHandler} for the guild.
+     */
     public AudioHandler setUpHandler(Guild guild)
     {
         AudioHandler handler;

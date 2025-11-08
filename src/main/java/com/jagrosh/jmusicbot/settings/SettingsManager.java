@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Manages the loading and saving of guild-specific settings from a JSON file.
  *
  * @author John Grosh (john.a.grosh@gmail.com)
  */
@@ -37,6 +38,9 @@ public class SettingsManager implements GuildSettingsManager<Settings>
     private final static String SETTINGS_FILE = "serversettings.json";
     private final HashMap<Long,Settings> settings;
 
+    /**
+     * Constructs a new SettingsManager and loads the settings from the file.
+     */
     public SettingsManager()
     {
         this.settings = new HashMap<>();
@@ -79,10 +83,10 @@ public class SettingsManager implements GuildSettingsManager<Settings>
     }
 
     /**
-     * Gets non-null settings for a Guild
+     * Gets non-null settings for a Guild.
      *
-     * @param guild the guild to get settings for
-     * @return the existing settings, or new settings for that guild
+     * @param guild The guild to get settings for.
+     * @return The existing settings, or new settings for that guild.
      */
     @Override
     public Settings getSettings(Guild guild)
@@ -90,6 +94,12 @@ public class SettingsManager implements GuildSettingsManager<Settings>
         return getSettings(guild.getIdLong());
     }
 
+    /**
+     * Gets non-null settings for a guild by its ID.
+     *
+     * @param guildId The ID of the guild to get settings for.
+     * @return The existing settings, or new settings for that guild.
+     */
     public Settings getSettings(long guildId)
     {
         return settings.computeIfAbsent(guildId, id -> createDefaultSettings());
@@ -100,6 +110,9 @@ public class SettingsManager implements GuildSettingsManager<Settings>
         return new Settings(this, 0, 0, 0, 100, null, RepeatMode.OFF, null, -1, QueueType.FAIR);
     }
 
+    /**
+     * Writes the current settings to the settings file.
+     */
     protected void writeSettings()
     {
         JSONObject obj = new JSONObject();

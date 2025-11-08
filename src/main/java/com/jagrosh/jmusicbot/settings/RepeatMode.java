@@ -16,6 +16,7 @@
 package com.jagrosh.jmusicbot.settings;
 
 /**
+ * An enum representing the different repeat modes for the music player.
  *
  * @author Michaili K
  */
@@ -34,11 +35,21 @@ public enum RepeatMode
         this.userFriendlyName = userFriendlyName;
     }
 
+    /**
+     * Gets the emoji associated with the repeat mode.
+     *
+     * @return The emoji.
+     */
     public String getEmoji()
     {
         return emoji;
     }
 
+    /**
+     * Gets the user-friendly name of the repeat mode.
+     *
+     * @return The user-friendly name.
+     */
     public String getUserFriendlyName()
     {
         return userFriendlyName;
