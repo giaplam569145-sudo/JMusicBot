@@ -2,18 +2,22 @@
 
 # JMusicBot
 
-[![Downloads](https://img.shields.io/github/downloads/jagrosh/MusicBot/total.svg)](https://github.com/jagrosh/MusicBot/releases/latest)
-[![Stars](https://img.shields.io/github/stars/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/stargazers)
-[![Release](https://img.shields.io/github/release/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/releases/latest)
-[![License](https://img.shields.io/github/license/jagrosh/MusicBot.svg)](https://github.com/jagrosh/MusicBot/blob/master/LICENSE)
-[![Discord](https://discordapp.com/api/guilds/147698382092238848/widget.png)](https://discord.gg/0p9LSGoRLu6Pet0k)<br>
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/jagrosh/MusicBot/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/jagrosh/MusicBot/tree/master)
-[![Build and Test](https://github.com/jagrosh/MusicBot/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/jagrosh/MusicBot/actions/workflows/build-and-test.yml)
-[![CodeFactor](https://www.codefactor.io/repository/github/jagrosh/musicbot/badge)](https://www.codefactor.io/repository/github/jagrosh/musicbot)
+> **Note:** This is an unofficial fork of the original [JMusicBot by jagrosh](https://github.com/jagrosh/MusicBot), licensed under the [Apache License 2.0](LICENSE). This project has been updated and adapted to be compatible with modern versions of JDA and other dependencies, and it is not officially affiliated with the original project.
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 A cross-platform Discord music bot with a clean interface, and that is easy to set up and run yourself!
 
 [![Setup](http://i.imgur.com/VvXYp5j.png)](https://jmusicbot.com/setup)
+
+## Changes from Original
+This fork was created to bring JMusicBot up to a modern technical standard and ensure compatibility with the current Discord API. The key changes include:
+
+*   **Updated to JDA 5:** The project has been fully ported to a stable version of JDA 5.x. This was necessary as JDA 4.x is no longer actively maintained.
+*   **Switched Lavaplayer Fork:** Instead of the original Lavaplayer by `sedmelluq`, this fork now uses the actively maintained fork by `dev.arbjerg`, which is compatible with JDA 5 and offers better audio playback stability.
+*   **Extensive Code Refactoring:** Due to breaking changes in JDA 5, large parts of the code have been refactored, especially regarding event handling, message/channel management, and Gateway Intents.
+*   **Stability Improvements:** The new dependencies and adjustments aim for a more stable voice connection and overall reliability.
+*   **General Maintenance:** Includes minor bug fixes and dependency updates.
 
 ## Features
   * Easy to run (just make sure Java is installed, and run!)
@@ -54,7 +58,10 @@ JMusicBot supports all sources and formats supported by [lavaplayer](https://git
 Please see the [Setup Page](https://jmusicbot.com/setup) to run this bot yourself!
 
 ## Questions/Suggestions/Bug Reports
-**Please read the [Issues List](https://github.com/jagrosh/MusicBot/issues) before suggesting a feature**. If you have a question, need troubleshooting help, or want to brainstorm a new feature, please start a [Discussion](https://github.com/jagrosh/MusicBot/discussions). If you'd like to suggest a feature or report a reproducible bug, please open an [Issue](https://github.com/jagrosh/MusicBot/issues) on this repository. If you like this bot, be sure to add a star to the libraries that make this possible: [**JDA**](https://github.com/DV8FromTheWorld/JDA) and [**lavaplayer**](https://github.com/sedmelluq/lavaplayer)!
+**Please check the [Issues List](https://github.com/giaplam569145-sudo/JMusicBot/issues) before suggesting a feature**. If you have a question, need troubleshooting help, or want to brainstorm a new feature, please start a [Discussion](https://github.com/giaplam569145-sudo/JMusicBot/discussions). If you'd like to suggest a feature or report a reproducible bug, please open an [Issue](https://github.com/giaplam569145-sudo/JMusicBot/issues) on this repository. If you like this bot, be sure to add a star to the libraries that make this possible: [**JDA**](https://github.com/DV8FromTheWorld/JDA) and [**lavaplayer**](https://github.com/sedmelluq/lavaplayer)!
+
+## Distribution
+When distributing builds of this project, you must comply with the terms of the Apache License 2.0. This includes retaining the `LICENSE` file and any `NOTICE` files, as well as providing clear attribution to the original JMusicBot project by jagrosh.
 
 ## Editing
 This bot (and the source code here) might not be easy to edit for inexperienced programmers. The main purpose of having the source public is to show the capabilities of the libraries, to allow others to understand how the bot works, and to allow those knowledgeable about java, JDA, and Discord bot development to contribute. There are many requirements and dependencies required to edit and compile it, and there will not be support provided for people looking to make changes on their own. Instead, consider making a feature request (see the above section). If you choose to make edits, please do so in accordance with the Apache 2.0 License.
