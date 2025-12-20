@@ -18,12 +18,8 @@ package com.jagrosh.jmusicbot;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.jagrosh.jdautilities.examples.command.*;
-import com.jagrosh.jmusicbot.commands.admin.*;
-import com.jagrosh.jmusicbot.commands.dj.*;
-import com.jagrosh.jmusicbot.commands.general.*;
-import com.jagrosh.jmusicbot.commands.music.*;
-import com.jagrosh.jmusicbot.commands.owner.*;
+import com.jagrosh.jmusicbot.commands.CommandRegistry;
+import com.jagrosh.jmusicbot.config.ConfigLoader;
 import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
@@ -49,9 +45,6 @@ import ch.qos.logback.classic.Level;
 public class JMusicBot
 {
     public final static Logger LOG = LoggerFactory.getLogger(JMusicBot.class);
-    public final static Permission[] RECOMMENDED_PERMS = {Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
-                                Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE,
-                                Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
     public final static GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.MESSAGE_CONTENT};
     
     /**
@@ -65,7 +58,7 @@ public class JMusicBot
             switch(args[0].toLowerCase())
             {
                 case "generate-config":
-                    BotConfig.writeDefaultConfig();
+                    ConfigLoader.writeDefaultConfig();
                     return;
                 default:
             }
@@ -82,9 +75,9 @@ public class JMusicBot
         OtherUtil.checkJavaVersion(prompt);
         
         // load config
-        BotConfig config = new BotConfig(prompt);
-        config.load();
-        if(!config.isValid())
+        ConfigLoader configLoader = new ConfigLoader();
+        BotConfig config = configLoader.loadConfig(prompt);
+        if(config == null)
             return;
         LOG.info("Loaded config from " + config.getConfigLocation());
 
@@ -170,57 +163,10 @@ public class JMusicBot
                 .setEmojis(config.getSuccess(), config.getWarning(), config.getError())
                 .setHelpWord(config.getHelp())
                 .setLinkedCacheSize(200)
-                .setGuildSettingsManager(settings)
-                .addCommands(
-                        new AboutCommand(Color.BLUE.brighter(),
-                                "a music bot that is easy to set up and run yourself",
-                                new String[]{"High-quality music playback", "Fair Queue scheduling", "Custom playlists"},
-                                RECOMMENDED_PERMS),
-                        new PingCommand(),
-                        new SettingsCmd(bot),
-                        
-                        new LyricsCmd(bot),
-                        new NowplayingCmd(bot),
-                        new PlayCmd(bot),
-                        new PlaylistsCmd(bot),
-                        new QueueCmd(bot),
-                        new RemoveCmd(bot),
-                        new SearchCmd(bot),
-                        new SCSearchCmd(bot),
-                        new SeekCmd(bot),
-                        new ShuffleCmd(bot),
-                        new SkipCmd(bot),
-
-                        new ForceRemoveCmd(bot),
-                        new ForceskipCmd(bot),
-                        new MoveTrackCmd(bot),
-                        new PauseCmd(bot),
-                        new PlaynextCmd(bot),
-                        new RepeatCmd(bot),
-                        new SkiptoCmd(bot),
-                        new StopCmd(bot),
-                        new VolumeCmd(bot),
-                        
-                        new PrefixCmd(bot),
-                        new QueueTypeCmd(bot),
-                        new SetdjCmd(bot),
-                        new SkipratioCmd(bot),
-                        new SettcCmd(bot),
-                        new SetvcCmd(bot),
-
-                        new AutoplaylistCmd(bot),
-                        new DebugCmd(bot),
-                        new PlaylistCmd(bot),
-                        new SetavatarCmd(bot),
-                        new SetgameCmd(bot),
-                        new SetnameCmd(bot),
-                        new SetstatusCmd(bot),
-                        new ShutdownCmd(bot)
-                );
+                .setGuildSettingsManager(settings);
         
-        // enable eval if owner did so
-        if(config.useEval())
-            cb.addCommand(new EvalCmd(bot));
+        CommandRegistry registry = new CommandRegistry(bot);
+        cb.addCommands(registry.getCommands());
 
         // set status if set in config
         if(config.getStatus() != OnlineStatus.UNKNOWN)
