@@ -31,6 +31,7 @@ import com.jagrosh.jmusicbot.Bot;
 public class GUI extends JFrame
 {
     private final ConsolePanel console;
+    private final FileBrowserPanel fileBrowser;
     private final Bot bot;
     
     /**
@@ -43,6 +44,7 @@ public class GUI extends JFrame
         super();
         this.bot = bot;
         console = new ConsolePanel();
+        fileBrowser = new FileBrowserPanel();
     }
     
     /**
@@ -54,6 +56,7 @@ public class GUI extends JFrame
         setTitle("JMusicBot");
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Console", console);
+        tabs.add("File Browser", fileBrowser);
         getContentPane().add(tabs);
         pack();
         setLocationRelativeTo(null);
