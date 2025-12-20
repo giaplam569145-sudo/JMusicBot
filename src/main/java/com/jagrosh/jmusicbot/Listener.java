@@ -16,6 +16,7 @@
 // Modified by giaplam569145-sudo, 2024: Adapted for JDA 5.x event system.
 package com.jagrosh.jmusicbot;
 
+import com.jagrosh.jmusicbot.commands.CommandRegistry;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import java.util.concurrent.TimeUnit;
 import net.dv8tion.jda.api.JDA;
@@ -64,7 +65,7 @@ public class Listener extends ListenerAdapter
         {
             Logger log = LoggerFactory.getLogger("MusicBot");
             log.warn("This bot is not on any guilds! Use the following link to add the bot to your guilds!");
-            log.warn(event.getJDA().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
+            log.warn(event.getJDA().getInviteUrl(CommandRegistry.RECOMMENDED_PERMS));
         }
         credit(event.getJDA());
         event.getJDA().getGuilds().forEach((guild) -> 

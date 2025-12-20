@@ -24,6 +24,7 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.NowplayingHandler;
 import com.jagrosh.jmusicbot.audio.PlayerManager;
 import com.jagrosh.jmusicbot.gui.GUI;
+import com.jagrosh.jmusicbot.lifecycle.ShutdownManager;
 import com.jagrosh.jmusicbot.playlist.PlaylistLoader;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import java.util.Objects;
@@ -48,8 +49,8 @@ public class Bot
     private final PlaylistLoader playlists;
     private final NowplayingHandler nowplaying;
     private final AloneInVoiceHandler aloneInVoiceHandler;
+    private final ShutdownManager shutdownManager;
     
-    private boolean shuttingDown = false;
     private JDA jda;
     private GUI gui;
     
@@ -73,6 +74,7 @@ public class Bot
         this.nowplaying.init();
         this.aloneInVoiceHandler = new AloneInVoiceHandler(this);
         this.aloneInVoiceHandler.init();
+        this.shutdownManager = new ShutdownManager(this);
     }
     
     /**
@@ -192,27 +194,7 @@ public class Bot
      */
     public void shutdown()
     {
-        if(shuttingDown)
-            return;
-        shuttingDown = true;
-        threadpool.shutdownNow();
-        if(jda.getStatus()!=JDA.Status.SHUTTING_DOWN)
-        {
-            jda.getGuilds().stream().forEach(g -> 
-            {
-                g.getAudioManager().closeAudioConnection();
-                AudioHandler ah = (AudioHandler)g.getAudioManager().getSendingHandler();
-                if(ah!=null)
-                {
-                    ah.stopAndClear();
-                    ah.getPlayer().destroy();
-                }
-            });
-            jda.shutdown();
-        }
-        if(gui!=null)
-            gui.dispose();
-        System.exit(0);
+        shutdownManager.shutdown();
     }
 
     /**
@@ -233,5 +215,10 @@ public class Bot
     public void setGUI(GUI gui)
     {
         this.gui = gui;
+    }
+
+    public GUI getGUI()
+    {
+        return gui;
     }
 }
