@@ -129,6 +129,14 @@ public class JMusicBot
             if (unsupportedReason != null)
             {
                 prompt.alert(Prompt.Level.ERROR, "JMusicBot", "JMusicBot cannot be run on this Discord bot: " + unsupportedReason);
+                if (prompt.isNoGUI())
+                {
+                    String msg = "Press Enter to exit...";
+                    if (System.console() != null)
+                        System.console().readLine(msg);
+                    else
+                        System.out.println(msg);
+                }
                 jda.shutdown();
                 System.exit(1);
             }
