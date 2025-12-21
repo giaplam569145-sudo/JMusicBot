@@ -16,6 +16,8 @@ jobs:
   build_jar:
     name: Build Jar
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
