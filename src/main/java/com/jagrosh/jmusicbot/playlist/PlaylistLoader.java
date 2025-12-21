@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -150,7 +151,7 @@ public class PlaylistLoader
                         list.add(s);
                 });
                 if(shuffle[0])
-                    shuffle(list);
+                    Collections.shuffle(list, ThreadLocalRandom.current());
                 return new Playlist(name, list, shuffle[0]);
             }
             else
@@ -162,18 +163,6 @@ public class PlaylistLoader
         catch(IOException e)
         {
             return null;
-        }
-    }
-    
-    
-    private static <T> void shuffle(List<T> list)
-    {
-        for(int first =0; first<list.size(); first++)
-        {
-            int second = (int)(Math.random()*list.size());
-            T tmp = list.get(first);
-            list.set(first, list.get(second));
-            list.set(second, tmp);
         }
     }
     
@@ -245,13 +234,7 @@ public class PlaylistLoader
                         {
                             List<AudioTrack> loaded = new ArrayList<>(ap.getTracks());
                             if(shuffle)
-                                for(int first =0; first<loaded.size(); first++)
-                                {
-                                    int second = (int)(Math.random()*loaded.size());
-                                    AudioTrack tmp = loaded.get(first);
-                                    loaded.set(first, loaded.get(second));
-                                    loaded.set(second, tmp);
-                                }
+                                Collections.shuffle(loaded, ThreadLocalRandom.current());
                             loaded.removeIf(track -> config.isTooLong(track));
                             loaded.forEach(at -> at.setUserData(0L));
                             tracks.addAll(loaded);
@@ -279,7 +262,7 @@ public class PlaylistLoader
         
         public void shuffleTracks()
         {
-            shuffle(tracks);
+            Collections.shuffle(tracks, ThreadLocalRandom.current());
         }
         
         public String getName()
