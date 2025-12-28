@@ -15,12 +15,10 @@
  */
 package com.jagrosh.jmusicbot.utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,29 +76,5 @@ public class FileSystemNavigator {
             throw new SecurityException("Access denied: Path attempts to escape the root directory.");
         }
         return targetPath;
-    }
-
-    public static class FileInfo {
-        private final String name;
-        private final boolean isDirectory;
-        private final String relativePath;
-
-        public FileInfo(String name, boolean isDirectory, String relativePath) {
-            this.name = name;
-            this.isDirectory = isDirectory;
-            this.relativePath = relativePath;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean isDirectory() {
-            return isDirectory;
-        }
-
-        public String getRelativePath() {
-            return relativePath;
-        }
     }
 }
