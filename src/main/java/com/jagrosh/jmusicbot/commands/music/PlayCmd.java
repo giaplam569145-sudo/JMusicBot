@@ -34,6 +34,7 @@ import com.jagrosh.jmusicbot.playlist.PlaylistLoader.Playlist;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import java.util.concurrent.TimeUnit;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
@@ -119,6 +120,30 @@ public class PlayCmd extends MusicCommand
                         + TimeUtil.formatTime(track.getDuration())+"` > `"+ TimeUtil.formatTime(bot.getConfig().getMaxSeconds()*1000)+"`")).queue();
                 return;
             }
+
+            // Check if the bot is connected to a voice channel
+            if(event.getGuild().getSelfMember().getVoiceState().getChannel() == null)
+            {
+                GuildVoiceState userState = event.getMember().getVoiceState();
+                if(userState.getChannel() != null)
+                {
+                    try
+                    {
+                        event.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
+                    }
+                    catch(PermissionException ex)
+                    {
+                        m.editMessage(event.getClient().getError()+" I am unable to connect to "+userState.getChannel().getAsMention()+"!").queue();
+                        return;
+                    }
+                }
+                else
+                {
+                    m.editMessage(event.getClient().getError()+" I am not connected to a voice channel and you are not in one!").queue();
+                    return;
+                }
+            }
+
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, RequestMetadata.fromResultHandler(track, event)))+1;
             String addMsg = FormatUtil.filter(event.getClient().getSuccess()+" Added **"+track.getInfo().title
@@ -250,6 +275,29 @@ public class PlayCmd extends MusicCommand
             }
             event.getChannel().sendMessage(loadingEmoji+" Loading playlist **"+event.getArgs()+"**... ("+playlist.getItems().size()+" items)").queue(m -> 
             {
+                // check if the bot is connected to a voice channel
+                if(event.getGuild().getSelfMember().getVoiceState().getChannel() == null)
+                {
+                    GuildVoiceState userState = event.getMember().getVoiceState();
+                    if(userState.getChannel() != null)
+                    {
+                        try
+                        {
+                            event.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
+                        }
+                        catch(PermissionException ex)
+                        {
+                            m.editMessage(event.getClient().getError()+" I am unable to connect to "+userState.getChannel().getAsMention()+"!").queue();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        m.editMessage(event.getClient().getError()+" I am not connected to a voice channel and you are not in one!").queue();
+                        return;
+                    }
+                }
+
                 AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
                 playlist.loadTracks(bot.getPlayerManager(), (at)->handler.addTrack(new QueuedTrack(at, RequestMetadata.fromResultHandler(at, event))), () -> {
                     StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty() 
