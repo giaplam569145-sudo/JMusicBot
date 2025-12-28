@@ -62,6 +62,7 @@ public class CommandRegistry
         commands.add(new LyricsCmd(bot));
         commands.add(new NowplayingCmd(bot));
         commands.add(new PlayCmd(bot));
+        commands.add(new BrowseCmd(bot));
         commands.add(new PlaylistsCmd(bot));
         commands.add(new QueueCmd(bot));
         commands.add(new RemoveCmd(bot));
@@ -70,7 +71,6 @@ public class CommandRegistry
         commands.add(new SeekCmd(bot));
         commands.add(new ShuffleCmd(bot));
         commands.add(new SkipCmd(bot));
-        commands.add(new FileBrowserCmd(bot));
 
         // DJ Commands
         commands.add(new ForceRemoveCmd(bot));

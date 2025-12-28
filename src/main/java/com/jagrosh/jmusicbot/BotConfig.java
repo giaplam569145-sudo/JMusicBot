@@ -78,7 +78,7 @@ public class BotConfig
         maxYTPlaylistPages = config.getInt("maxytplaylistpages");
         aloneTimeUntilStop = config.getLong("alonetimeuntilstop");
         playlistsFolder = config.getString("playlistsfolder");
-        try { browserFolder = config.getString("browserfolder"); } catch(ConfigException.Missing ex) { browserFolder = "."; }
+        browserFolder = config.hasPath("browserfolder") ? config.getString("browserfolder") : ".";
         aliases = config.getConfig("aliases");
         transforms = config.getConfig("transforms");
         skipratio = config.getDouble("skipratio");
