@@ -41,6 +41,10 @@ import org.json.JSONTokener;
  */
 public class OtherUtil
 {
+    public final static String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
+                    + "Current version: %s\n"
+                    + "New Version: %s\n\n"
+                    + "Please visit https://github.com/giaplam569145-sudo/JMusicBot/releases/latest to get the latest release.";
     private final static String WINDOWS_INVALID_PATH = "c:\\windows\\system32\\";
     
     /**
@@ -174,6 +178,25 @@ public class OtherUtil
     }
     
     /**
+     * Checks for a new version of JMusicBot.
+     *
+     * @param prompt The prompt to use for displaying alerts.
+     */
+    public static void checkVersion(Prompt prompt)
+    {
+        // Get current version number
+        String version = getCurrentVersion();
+
+        // Check for new version
+        String latestVersion = getLatestVersion();
+
+        if(latestVersion!=null && !latestVersion.equals(version))
+        {
+            prompt.alert(Prompt.Level.WARNING, "JMusicBot Version", String.format(NEW_VERSION_AVAILABLE, version, latestVersion));
+        }
+    }
+
+    /**
      * Gets the current version of JMusicBot.
      *
      * @return The current version string.
@@ -186,6 +209,40 @@ public class OtherUtil
             return "UNKNOWN";
     }
     
+    /**
+     * Gets the latest version of JMusicBot from GitHub.
+     *
+     * @return The latest version string.
+     */
+    public static String getLatestVersion()
+    {
+        try
+        {
+            Response response = new OkHttpClient.Builder().build()
+                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/giaplam569145-sudo/JMusicBot/releases/latest").build())
+                    .execute();
+            ResponseBody body = response.body();
+            if(body != null)
+            {
+                try(Reader reader = body.charStream())
+                {
+                    JSONObject obj = new JSONObject(new JSONTokener(reader));
+                    return obj.getString("tag_name");
+                }
+                finally
+                {
+                    response.close();
+                }
+            }
+            else
+                return null;
+        }
+        catch(IOException | JSONException | NullPointerException ex)
+        {
+            return null;
+        }
+    }
+
     /**
      * Checks if the bot is running on a supported platform and returns the reason if not.
      *

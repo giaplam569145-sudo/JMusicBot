@@ -68,7 +68,8 @@ public class DebugCmd extends OwnerCommand
                 .append("\n  NPImages = ").append(bot.getConfig().useNPImages())
                 .append("\n  SongInStatus = ").append(bot.getConfig().getSongInStatus())
                 .append("\n  StayInChannel = ").append(bot.getConfig().getStay())
-                .append("\n  UseEval = ").append(bot.getConfig().useEval());
+                .append("\n  UseEval = ").append(bot.getConfig().useEval())
+                .append("\n  UpdateAlerts = ").append(bot.getConfig().useUpdateAlerts());
         sb.append("\n\nDependency Information:")
                 .append("\n  JDA Version = ").append(JDAInfo.VERSION)
                 .append("\n  JDA-Utilities Version = ").append(JDAUtilitiesInfo.VERSION)
