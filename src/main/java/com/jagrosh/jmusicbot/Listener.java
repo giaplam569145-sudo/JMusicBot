@@ -83,7 +83,7 @@ public class Listener extends ListenerAdapter
         });
         if(bot.getConfig().useUpdateAlerts())
         {
-            bot.getThreadpool().scheduleWithFixedDelay(() -> 
+            bot.getThreadpool().scheduleWithFixedDelay(() ->
             {
                 try
                 {

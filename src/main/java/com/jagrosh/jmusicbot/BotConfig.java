@@ -303,7 +303,7 @@ public class BotConfig
     {
         return dbots;
     }
-    
+
     /**
      * Checks if update alerts are enabled.
      *
