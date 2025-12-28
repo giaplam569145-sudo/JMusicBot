@@ -18,6 +18,7 @@ package com.jagrosh.jmusicbot.utils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,55 +26,62 @@ import java.util.stream.Stream;
 
 /**
  * Helper class for navigating the file system safely.
- *
- * @author giaplam569145-sudo
  */
-public class FileSystemNavigator
-{
-    /**
-     * Lists files and directories in the given path, ensuring it is within the root.
-     *
-     * @param path The path to list contents of.
-     * @param root The root directory to confine navigation to.
-     * @return A list of paths found in the directory.
-     * @throws IOException If an I/O error occurs.
-     * @throws SecurityException If the path is outside the allowed root.
-     */
-    public static List<Path> getContents(Path path, Path root) throws IOException
-    {
-        Path absolutePath = path.toAbsolutePath().normalize();
-        Path absoluteRoot = root.toAbsolutePath().normalize();
+public class FileSystemNavigator {
 
-        if (!absolutePath.startsWith(absoluteRoot))
-        {
-            throw new SecurityException("Access denied: Path is outside the allowed root.");
-        }
+    private final Path root;
 
-        try (Stream<Path> stream = Files.list(absolutePath))
-        {
-            return stream.filter(p -> {
-                if (Files.isDirectory(p)) return true;
-                String name = p.getFileName().toString().toLowerCase();
-                return name.endsWith(".mp3") || name.endsWith(".flac") || name.endsWith(".wav")
-                    || name.endsWith(".ogg") || name.endsWith(".m4a") || name.endsWith(".mp4")
-                    || name.endsWith(".webm") || name.endsWith(".mkv");
-            }).sorted((p1, p2) -> {
-                if (Files.isDirectory(p1) && !Files.isDirectory(p2)) return -1;
-                if (!Files.isDirectory(p1) && Files.isDirectory(p2)) return 1;
-                return p1.getFileName().toString().compareToIgnoreCase(p2.getFileName().toString());
-            }).collect(Collectors.toList());
-        }
+    public FileSystemNavigator(String rootPath) {
+        this.root = Paths.get(rootPath).toAbsolutePath().normalize();
     }
 
     /**
-     * Checks if the given path is the root directory.
+     * Lists files and directories in the given path relative to the root.
      *
-     * @param path The path to check.
-     * @param root The root directory.
-     * @return True if the path is the root.
+     * @param relativePath The path relative to the root.
+     * @return A list of FileInfo objects representing the contents.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException If the path tries to escape the root.
      */
-    public static boolean isRoot(Path path, Path root)
-    {
-        return path.toAbsolutePath().normalize().equals(root.toAbsolutePath().normalize());
+    public List<FileInfo> listItems(String relativePath) throws IOException, SecurityException {
+        Path targetPath = root.resolve(relativePath).toAbsolutePath().normalize();
+
+        if (!targetPath.startsWith(root)) {
+            throw new SecurityException("Access denied: Path attempts to escape the root directory.");
+        }
+
+        if (!Files.exists(targetPath) || !Files.isDirectory(targetPath)) {
+             return Collections.emptyList();
+        }
+
+        try (Stream<Path> stream = Files.list(targetPath)) {
+            return stream
+                    .filter(path -> {
+                        if (Files.isDirectory(path)) return true;
+                        String name = path.getFileName().toString().toLowerCase();
+                        return name.endsWith(".mp3") || name.endsWith(".flac") || name.endsWith(".wav")
+                            || name.endsWith(".ogg") || name.endsWith(".m4a") || name.endsWith(".mp4")
+                            || name.endsWith(".webm") || name.endsWith(".mkv");
+                    })
+                    .map(path -> new FileInfo(
+                            path.getFileName().toString(),
+                            Files.isDirectory(path),
+                            root.relativize(path).toString()
+                    ))
+                    .sorted((a, b) -> {
+                        if (a.isDirectory() && !b.isDirectory()) return -1;
+                        if (!a.isDirectory() && b.isDirectory()) return 1;
+                        return a.getName().compareToIgnoreCase(b.getName());
+                    })
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public Path getAbsolutePath(String relativePath) throws SecurityException {
+         Path targetPath = root.resolve(relativePath).toAbsolutePath().normalize();
+         if (!targetPath.startsWith(root)) {
+            throw new SecurityException("Access denied: Path attempts to escape the root directory.");
+        }
+        return targetPath;
     }
 }

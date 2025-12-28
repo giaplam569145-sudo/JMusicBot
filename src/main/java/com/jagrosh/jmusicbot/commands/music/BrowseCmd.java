@@ -22,6 +22,7 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.QueuedTrack;
 import com.jagrosh.jmusicbot.audio.RequestMetadata;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
+import com.jagrosh.jmusicbot.utils.FileInfo;
 import com.jagrosh.jmusicbot.utils.FileSystemNavigator;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 import com.jagrosh.jmusicbot.utils.TimeUtil;
@@ -29,8 +30,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -39,13 +40,11 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
-import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 /**
  * Command to browse and play local files.
@@ -68,18 +67,21 @@ public class BrowseCmd extends MusicCommand
     public void doCommand(CommandEvent event)
     {
         String browserFolder = bot.getConfig().getBrowserFolder();
-        Path root = Paths.get(browserFolder).toAbsolutePath().normalize();
+        FileSystemNavigator navigator = new FileSystemNavigator(browserFolder);
 
-        // Verify root exists
-        if (!Files.exists(root) || !Files.isDirectory(root))
-        {
-            event.replyError("The configured browser folder does not exist or is not a directory: " + root);
-            return;
+        // Check if root exists is handled inside listItems implicitly by returning empty list or throwing,
+        // but we can just try to open it.
+        try {
+            // Test access
+            navigator.listItems("");
+        } catch (Exception e) {
+             event.replyError("Failed to access browser folder: " + e.getMessage());
+             return;
         }
 
         try
         {
-            new BrowserMenu(bot.getWaiter(), event, root).display();
+            new BrowserMenu(bot.getWaiter(), event, navigator).display();
         }
         catch(IOException e)
         {
@@ -91,8 +93,8 @@ public class BrowseCmd extends MusicCommand
     {
         private final EventWaiter waiter;
         private final CommandEvent event;
-        private final Path root;
-        private Path currentPath;
+        private final FileSystemNavigator navigator;
+        private String currentPath;
         private Message menuMessage;
         private int page = 0;
 
@@ -103,12 +105,12 @@ public class BrowseCmd extends MusicCommand
         private final static String NEXT = "browse_next";
         private final static String PREV = "browse_prev";
 
-        public BrowserMenu(EventWaiter waiter, CommandEvent event, Path root)
+        public BrowserMenu(EventWaiter waiter, CommandEvent event, FileSystemNavigator navigator)
         {
             this.waiter = waiter;
             this.event = event;
-            this.root = root;
-            this.currentPath = root;
+            this.navigator = navigator;
+            this.currentPath = ""; // Start at root
         }
 
         public void display() throws IOException
@@ -128,11 +130,13 @@ public class BrowseCmd extends MusicCommand
             }
         }
 
-        private MessageCreateData renderMessageCreate(Path path) throws IOException
+        private MessageCreateData renderMessageCreate(String path) throws IOException
         {
-            List<Path> contents = FileSystemNavigator.getContents(path, root);
+            List<FileInfo> contents = navigator.listItems(path);
+            String folderName = path.isEmpty() ? "/" : Paths.get(path).getFileName().toString();
+
             StringSelectMenu.Builder menuBuilder = StringSelectMenu.create(SELECT)
-                    .setPlaceholder("Select a file or folder in " + path.getFileName())
+                    .setPlaceholder("Select a file or folder in " + folderName)
                     .setMinValues(1)
                     .setMaxValues(1);
 
@@ -143,7 +147,7 @@ public class BrowseCmd extends MusicCommand
 
             int start = page * itemsPerPage;
             int end = Math.min(start + itemsPerPage, contents.size());
-            List<Path> pageContents = contents.subList(start, end);
+            List<FileInfo> pageContents = contents.subList(start, end);
 
             if (pageContents.isEmpty())
             {
@@ -154,20 +158,20 @@ public class BrowseCmd extends MusicCommand
             {
                 for (int i = 0; i < pageContents.size(); i++)
                 {
-                    Path p = pageContents.get(i);
-                    String name = p.getFileName().toString();
+                    FileInfo item = pageContents.get(i);
+                    String name = item.getName();
                     if (name.length() > 100) name = name.substring(0, 97) + "...";
 
                     // Use index + start as value to map back to original list index
                     String value = String.valueOf(start + i);
 
-                    String emoji = Files.isDirectory(p) ? "\uD83D\uDCC1" : "\uD83C\uDFB5"; // 📁 or 🎵
-                    menuBuilder.addOption(name, value, Files.isDirectory(p) ? "Folder" : "Audio File", net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode(emoji));
+                    String emoji = item.isDirectory() ? "\uD83D\uDCC1" : "\uD83C\uDFB5"; // 📁 or 🎵
+                    menuBuilder.addOption(name, value, item.isDirectory() ? "Folder" : "Audio File", net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode(emoji));
                 }
             }
 
             Button upButton = Button.secondary(UP, "Up").withEmoji(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode("\u2B06\uFE0F")); // ⬆️
-            if (FileSystemNavigator.isRoot(path, root))
+            if (path.isEmpty())
             {
                 upButton = upButton.asDisabled();
             }
@@ -181,14 +185,14 @@ public class BrowseCmd extends MusicCommand
             Button closeButton = Button.danger(CLOSE, "Close").withEmoji(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode("\u274C")); // ❌
 
             return new MessageCreateBuilder()
-                    .setContent("**Browsing:** `" + path.toAbsolutePath().normalize() + "` (Page " + (page + 1) + "/" + Math.max(1, totalPages) + ")")
+                    .setContent("**Browsing:** `/" + path.replace(File.separator, "/") + "` (Page " + (page + 1) + "/" + Math.max(1, totalPages) + ")")
                     .setComponents(
                             ActionRow.of(menuBuilder.build()),
                             ActionRow.of(prevButton, upButton, closeButton, nextButton)
                     ).build();
         }
 
-        private MessageEditData renderMessageEdit(Path path) throws IOException
+        private MessageEditData renderMessageEdit(String path) throws IOException
         {
             MessageCreateData data = renderMessageCreate(path);
             return MessageEditData.fromCreateData(data);
@@ -221,9 +225,11 @@ public class BrowseCmd extends MusicCommand
                             String cid = bie.getComponentId();
                             if (cid.equals(UP))
                             {
-                                if (!FileSystemNavigator.isRoot(currentPath, root))
+                                if (!currentPath.isEmpty())
                                 {
-                                    currentPath = currentPath.getParent();
+                                    Path p = Paths.get(currentPath);
+                                    Path parent = p.getParent();
+                                    currentPath = parent == null ? "" : parent.toString();
                                     page = 0; // Reset page on navigation
                                     display();
                                 }
@@ -251,20 +257,20 @@ public class BrowseCmd extends MusicCommand
                             if (selected.equals("empty")) return;
 
                             int index = Integer.parseInt(selected);
-                            List<Path> contents = FileSystemNavigator.getContents(currentPath, root);
+                            List<FileInfo> contents = navigator.listItems(currentPath);
                             if (index >= 0 && index < contents.size())
                             {
-                                Path selectedPath = contents.get(index);
-                                if (Files.isDirectory(selectedPath))
+                                FileInfo selectedItem = contents.get(index);
+                                if (selectedItem.isDirectory())
                                 {
-                                    currentPath = selectedPath;
+                                    currentPath = selectedItem.getRelativePath();
                                     page = 0; // Reset page on navigation
                                     display();
                                 }
                                 else
                                 {
                                     // Play the file
-                                    playFile(selectedPath);
+                                    playFile(navigator.getAbsolutePath(selectedItem.getRelativePath()));
                                 }
                             }
                             else
@@ -278,7 +284,7 @@ public class BrowseCmd extends MusicCommand
                         event.replyError("Error navigating: " + ex.getMessage());
                     }
                 },
-                30, TimeUnit.SECONDS, () -> menuMessage.delete().queue());
+                2, TimeUnit.MINUTES, () -> menuMessage.delete().queue()); // Changed timeout to 2 mins as per my previous logic
         }
 
         private void playFile(Path file)
