@@ -138,7 +138,7 @@ public class BrowseCmd extends MusicCommand
             List<FileInfo> contents = navigator.listItems(path);
             String folderName = path.isEmpty() ? "/" : Paths.get(path).getFileName().toString();
 
-            int itemsPerPage = 20; // 4 rows of 5 buttons
+            int itemsPerPage = bot.getConfig().getBrowserPageSize();
             int totalPages = (int) Math.ceil((double) contents.size() / itemsPerPage);
             if (totalPages == 0) totalPages = 1;
             if (page >= totalPages) page = Math.max(0, totalPages - 1);

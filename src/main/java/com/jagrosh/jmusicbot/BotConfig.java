@@ -38,7 +38,7 @@ public class BotConfig
             evalEngine;
     private boolean stayInChannel, songInGame, npImages, updatealerts, useEval, dbots;
     private long owner, maxSeconds, aloneTimeUntilStop;
-    private int maxYTPlaylistPages;
+    private int maxYTPlaylistPages, browserPageSize;
     private double skipratio;
     private OnlineStatus status;
     private Activity game;
@@ -79,6 +79,7 @@ public class BotConfig
         aloneTimeUntilStop = config.getLong("alonetimeuntilstop");
         playlistsFolder = config.getString("playlistsfolder");
         browserFolder = config.hasPath("browserfolder") ? config.getString("browserfolder") : ".";
+        browserPageSize = config.hasPath("browserpagesize") ? config.getInt("browserpagesize") : 20;
         aliases = config.getConfig("aliases");
         transforms = config.getConfig("transforms");
         skipratio = config.getDouble("skipratio");
@@ -284,6 +285,15 @@ public class BotConfig
         return browserFolder;
     }
     
+    /**
+     * Gets the items per page for the file browser.
+     *
+     * @return The number of items to display per page in the file browser.
+     */
+    public int getBrowserPageSize() {
+        return browserPageSize;
+    }
+
     /**
      * Checks if the bot is configured for DBots.
      *
