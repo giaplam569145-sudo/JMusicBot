@@ -33,7 +33,7 @@ public class BotConfig
 {
     private final Path path;
     
-    private String token, prefix, altprefix, helpWord, playlistsFolder, logLevel,
+    private String token, prefix, altprefix, helpWord, playlistsFolder, browserFolder, logLevel,
             successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji,
             evalEngine;
     private boolean stayInChannel, songInGame, npImages, updatealerts, useEval, dbots;
@@ -78,6 +78,7 @@ public class BotConfig
         maxYTPlaylistPages = config.getInt("maxytplaylistpages");
         aloneTimeUntilStop = config.getLong("alonetimeuntilstop");
         playlistsFolder = config.getString("playlistsfolder");
+        try { browserFolder = config.getString("browserfolder"); } catch(ConfigException.Missing ex) { browserFolder = "."; }
         aliases = config.getConfig("aliases");
         transforms = config.getConfig("transforms");
         skipratio = config.getDouble("skipratio");
@@ -271,6 +272,16 @@ public class BotConfig
     public String getPlaylistsFolder()
     {
         return playlistsFolder;
+    }
+
+    /**
+     * Gets the browser folder.
+     *
+     * @return The path to the browser folder.
+     */
+    public String getBrowserFolder()
+    {
+        return browserFolder;
     }
     
     /**

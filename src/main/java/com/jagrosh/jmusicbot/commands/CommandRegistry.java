@@ -70,6 +70,7 @@ public class CommandRegistry
         commands.add(new SeekCmd(bot));
         commands.add(new ShuffleCmd(bot));
         commands.add(new SkipCmd(bot));
+        commands.add(new FileBrowserCmd(bot));
 
         // DJ Commands
         commands.add(new ForceRemoveCmd(bot));
