@@ -256,6 +256,18 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
     }
 
     @Override
+    public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs, StackTraceElement[] stackTrace) {
+        LoggerFactory.getLogger("AudioHandler").warn("Track " + track.getIdentifier() + " got stuck, playing next track");
+        manager.getBot().getThreadpool().execute(() -> {
+            try {
+                track.setPosition(track.getPosition() + 10000); // try skipping 10s
+            } catch (Exception ignore) {
+                player.stopTrack();
+            }
+        });
+    }
+
+    @Override
     public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
         LoggerFactory.getLogger("AudioHandler").error("Track " + track.getIdentifier() + " has failed to play", exception);
     }
