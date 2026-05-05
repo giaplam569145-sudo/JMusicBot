@@ -47,6 +47,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Command to browse and play local files.
@@ -55,6 +57,8 @@ import net.dv8tion.jda.api.utils.messages.MessageEditData;
  */
 public class BrowseCmd extends MusicCommand
 {
+    private final static Logger LOG = LoggerFactory.getLogger(BrowseCmd.class);
+
     public BrowseCmd(Bot bot)
     {
         super(bot);
@@ -69,26 +73,39 @@ public class BrowseCmd extends MusicCommand
     @Override
     public void doCommand(CommandEvent event)
     {
+        LOG.info("Browse command started by user: {}", event.getAuthor().getId());
+
         String browserFolder = bot.getConfig().getBrowserFolder();
         FileSystemNavigator navigator = new FileSystemNavigator(browserFolder);
+        LOG.info("FileSystemNavigator initialized with folder: {}", browserFolder);
 
         // Check if root exists is handled inside listItems implicitly by returning empty list or throwing,
         // but we can just try to open it.
         try {
             // Test access
-            navigator.listItems("");
+            List<FileInfo> items = navigator.listItems("");
+            LOG.info("listItems('') returned {} items", items.size());
         } catch (Exception e) {
+             LOG.error("Failed to access browser folder", e);
              event.replyError("Failed to access browser folder: " + e.getMessage());
              return;
         }
 
         try
         {
-            new BrowserMenu(bot.getWaiter(), event, navigator).display();
+            BrowserMenu menu = new BrowserMenu(bot.getWaiter(), event, navigator);
+            LOG.info("BrowserMenu created, calling display()");
+            menu.display();
         }
         catch(IOException e)
         {
+            LOG.error("Failed to access file system in display", e);
             event.replyError("Failed to access file system: " + e.getMessage());
+        }
+        catch(Exception e)
+        {
+            LOG.error("Unexpected error in doCommand", e);
+            event.replyError("An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -118,17 +135,24 @@ public class BrowseCmd extends MusicCommand
 
         public void display() throws IOException
         {
+            LOG.info("Displaying browser menu. Current Path: '{}'", currentPath);
             if (menuMessage == null)
             {
                 event.getChannel().sendMessage(renderMessageCreate(currentPath)).queue(m ->
                 {
                     menuMessage = m;
                     waitForInteraction();
+                }, t -> {
+                    LOG.error("Failed to send browser menu", t);
+                    event.replyError("Failed to send browser menu: " + t.getMessage());
                 });
             }
             else
             {
-                menuMessage.editMessage(renderMessageEdit(currentPath)).queue();
+                menuMessage.editMessage(renderMessageEdit(currentPath)).queue(m -> {}, t -> {
+                     LOG.error("Failed to edit browser menu", t);
+                     event.replyError("Failed to edit browser menu: " + t.getMessage());
+                });
                 waitForInteraction();
             }
         }
