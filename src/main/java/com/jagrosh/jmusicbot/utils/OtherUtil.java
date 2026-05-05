@@ -44,7 +44,7 @@ public class OtherUtil
     public final static String NEW_VERSION_AVAILABLE = "There is a new version of JMusicBot available!\n"
                     + "Current version: %s\n"
                     + "New Version: %s\n\n"
-                    + "Please visit https://github.com/jagrosh/MusicBot/releases/latest to get the latest release.";
+                    + "Please visit https://github.com/giaplam569145-sudo/JMusicBot/releases/latest to get the latest release.";
     private final static String WINDOWS_INVALID_PATH = "c:\\windows\\system32\\";
     
     /**
@@ -186,16 +186,16 @@ public class OtherUtil
     {
         // Get current version number
         String version = getCurrentVersion();
-        
+
         // Check for new version
         String latestVersion = getLatestVersion();
-        
+
         if(latestVersion!=null && !latestVersion.equals(version))
         {
             prompt.alert(Prompt.Level.WARNING, "JMusicBot Version", String.format(NEW_VERSION_AVAILABLE, version, latestVersion));
         }
     }
-    
+
     /**
      * Gets the current version of JMusicBot.
      *
@@ -219,7 +219,7 @@ public class OtherUtil
         try
         {
             Response response = new OkHttpClient.Builder().build()
-                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/jagrosh/MusicBot/releases/latest").build())
+                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/giaplam569145-sudo/JMusicBot/releases/latest").build())
                     .execute();
             ResponseBody body = response.body();
             if(body != null)
