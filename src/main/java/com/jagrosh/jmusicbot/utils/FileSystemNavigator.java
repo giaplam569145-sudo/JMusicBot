@@ -17,6 +17,7 @@ package com.jagrosh.jmusicbot.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -31,8 +32,8 @@ public class FileSystemNavigator {
 
     private final Path root;
 
-    public FileSystemNavigator(String rootPath) {
-        this.root = Paths.get(rootPath).toAbsolutePath().normalize();
+    public FileSystemNavigator(String rootPath) throws IOException {
+        this.root = Paths.get(rootPath).toRealPath();
     }
 
     /**
@@ -44,13 +45,18 @@ public class FileSystemNavigator {
      * @throws SecurityException If the path tries to escape the root.
      */
     public List<FileInfo> listItems(String relativePath) throws IOException, SecurityException {
-        Path targetPath = root.resolve(relativePath).toAbsolutePath().normalize();
+        Path targetPath;
+        try {
+            targetPath = root.resolve(relativePath).toRealPath();
+        } catch (NoSuchFileException e) {
+            return Collections.emptyList();
+        }
 
         if (!targetPath.startsWith(root)) {
             throw new SecurityException("Access denied: Path attempts to escape the root directory.");
         }
 
-        if (!Files.exists(targetPath) || !Files.isDirectory(targetPath)) {
+        if (!Files.isDirectory(targetPath)) {
              return Collections.emptyList();
         }
 
@@ -77,8 +83,8 @@ public class FileSystemNavigator {
         }
     }
 
-    public Path getAbsolutePath(String relativePath) throws SecurityException {
-         Path targetPath = root.resolve(relativePath).toAbsolutePath().normalize();
+    public Path getAbsolutePath(String relativePath) throws IOException, SecurityException {
+         Path targetPath = root.resolve(relativePath).toRealPath();
          if (!targetPath.startsWith(root)) {
             throw new SecurityException("Access denied: Path attempts to escape the root directory.");
         }

@@ -67,7 +67,16 @@ public class BrowseCmd extends MusicCommand
     public void doCommand(CommandEvent event)
     {
         String browserFolder = bot.getConfig().getBrowserFolder();
-        FileSystemNavigator navigator = new FileSystemNavigator(browserFolder);
+        FileSystemNavigator navigator;
+        try
+        {
+            navigator = new FileSystemNavigator(browserFolder);
+        }
+        catch (IOException e)
+        {
+            event.replyError("Failed to access browser folder: " + e.getMessage());
+            return;
+        }
 
         // Check if root exists is handled inside listItems implicitly by returning empty list or throwing,
         // but we can just try to open it.
