@@ -1,0 +1,60 @@
+/*
+ * Copyright 2018 John Grosh <john.a.grosh@gmail.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.valentinebrother.jmusicbot.commands;
+
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.valentinebrother.jmusicbot.Bot;
+import com.valentinebrother.jmusicbot.settings.Settings;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Role;
+
+/**
+ * A base class for commands that require DJ permissions.
+ *
+ * @author John Grosh (john.a.grosh@gmail.com)
+ */
+public abstract class DJCommand extends MusicCommand
+{
+    /**
+     * Constructs a new DJCommand.
+     *
+     * @param bot The bot instance.
+     */
+    public DJCommand(Bot bot)
+    {
+        super(bot);
+        this.category = new Category("DJ", event -> checkDJPermission(event));
+    }
+    
+    /**
+     * Checks if a user has DJ permissions.
+     *
+     * @param event The command event.
+     * @return True if the user has DJ permissions, false otherwise.
+     */
+    public static boolean checkDJPermission(CommandEvent event)
+    {
+        if(event.getAuthor().getId().equals(event.getClient().getOwnerId()))
+            return true;
+        if(event.getGuild()==null)
+            return true;
+        if(event.getMember().hasPermission(Permission.MANAGE_SERVER))
+            return true;
+        Settings settings = event.getClient().getSettingsFor(event.getGuild());
+        Role dj = settings.getRole(event.getGuild());
+        return dj!=null && (event.getMember().getRoles().contains(dj) || dj.getIdLong()==event.getGuild().getIdLong());
+    }
+}

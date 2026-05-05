@@ -1,0 +1,85 @@
+/*
+ * Copyright 2021 John Grosh <john.a.grosh@gmail.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.valentinebrother.jmusicbot.audio;
+
+import com.valentinebrother.jmusicbot.utils.TimeUtil;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import com.valentinebrother.jmusicbot.queue.Queueable;
+import net.dv8tion.jda.api.entities.User;
+
+/**
+ * Represents a track that has been added to the queue.
+ * This class holds the {@link AudioTrack} and its associated {@link RequestMetadata}.
+ *
+ * @author John Grosh <john.a.grosh@gmail.com>
+ */
+public class QueuedTrack implements Queueable
+{
+    private final AudioTrack track;
+    private final RequestMetadata requestMetadata;
+
+    /**
+     * Constructs a new QueuedTrack.
+     *
+     * @param track The {@link AudioTrack} to queue.
+     * @param rm    The {@link RequestMetadata} associated with the track.
+     */
+    public QueuedTrack(AudioTrack track, RequestMetadata rm)
+    {
+        this.track = track;
+        this.track.setUserData(rm == null ? RequestMetadata.EMPTY : rm);
+
+        this.requestMetadata = rm;
+        if (this.track.isSeekable() && rm != null)
+            track.setPosition(rm.requestInfo.startTimestamp);
+    }
+    
+    @Override
+    public long getIdentifier() 
+    {
+        return requestMetadata.getOwner();
+    }
+    
+    /**
+     * Gets the {@link AudioTrack}.
+     *
+     * @return The audio track.
+     */
+    public AudioTrack getTrack()
+    {
+        return track;
+    }
+
+    /**
+     * Gets the {@link RequestMetadata}.
+     *
+     * @return The request metadata.
+     */
+    public RequestMetadata getRequestMetadata()
+    {
+        return requestMetadata;
+    }
+
+    @Override
+    public String toString() 
+    {
+        String entry = "`[" + TimeUtil.formatTime(track.getDuration()) + "]` ";
+        AudioTrackInfo trackInfo = track.getInfo();
+        entry = entry + (trackInfo.uri.startsWith("http") ? "[**" + trackInfo.title + "**]("+trackInfo.uri+")" : "**" + trackInfo.title + "**");
+        return entry + " - <@" + track.getUserData(RequestMetadata.class).getOwner() + ">";
+    }
+}
